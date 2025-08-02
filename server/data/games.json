@@ -1,65 +1,284 @@
-[
-  {
-    "id": "ZELDA",
-    "category": "ADVENTURE",
-    "name": [
-      {
-        "language": "EN",
-        "value": "The Legend of Zelda: Breath of the Wild",
-        "isDefault": true
+{
+  "games": [
+    {
+      "id": "GAME_002",
+      "category": "Adventure",
+      "name": {
+        "en": "Lost Kingdom",
+        "ko": "잃어버린 왕국",
+        "ja": "失われた王国"
       },
-      {
-        "language": "KO",
-        "value": "젤다의 전설: 브레스 오브 더 와일드",
-        "isDefault": false
+      "defaultLanguage": "en"
+    },
+    {
+      "id": "GAME_003",
+      "category": "RPG",
+      "name": {
+        "en": "Dragon Quest",
+        "ko": "드래곤 퀘스트",
+        "ja": "ドラゴンクエスト"
       },
-      {
-        "language": "JA",
-        "value": "ゼルダの伝説: ブレス オブ ザ ワイルド",
-        "isDefault": false
-      }
-    ]
-  },
-  {
-    "id": "UNCHARTED4",
-    "category": "ADVENTURE",
-    "name": [
-      {
-        "language": "EN",
-        "value": "Uncharted 4: A Thief's End",
-        "isDefault": true
+      "defaultLanguage": "en"
+    },
+    {
+      "id": "GAME_004",
+      "category": "Strategy",
+      "name": {
+        "en": "Empire Builder",
+        "ko": "제국 건설자",
+        "ja": "帝国ビルダー"
       },
-      {
-        "language": "KO",
-        "value": "언차티드 4: 어 씨프스 엔드",
-        "isDefault": false
+      "defaultLanguage": "en"
+    },
+    {
+      "id": "GAME_005",
+      "category": "Sports",
+      "name": {
+        "en": "Soccer Pro",
+        "ko": "축구 프로",
+        "ja": "サッカープロ"
       },
-      {
-        "language": "JA",
-        "value": "アンチャーテッド 4: 海賊王と最後の秘宝",
-        "isDefault": false
-      }
-    ]
-  },
-  {
-    "id": "TOMB_RAIDER",
-    "category": "ADVENTURE",
-    "name": [
-      {
-        "language": "EN",
-        "value": "Tomb Raider",
-        "isDefault": true
+      "defaultLanguage": "en"
+    },
+    {
+      "id": "GAME_006",
+      "category": "Racing",
+      "name": {
+        "en": "Speed Racer",
+        "ko": "스피드 레이서",
+        "ja": "スピードレーサー"
       },
-      {
-        "language": "KO",
-        "value": "툼 레이더",
-        "isDefault": false
+      "defaultLanguage": "en"
+    },
+    {
+      "id": "GAME_007",
+      "category": "Puzzle",
+      "name": {
+        "en": "Brain Teaser",
+        "ko": "두뇌 퀴즈",
+        "ja": "脳トレ"
       },
-      {
-        "language": "JA",
-        "value": "トゥームレイダー",
-        "isDefault": false
-      }
-    ]
-  }
-] 
+      "defaultLanguage": "en"
+    },
+    {
+      "id": "GAME_008",
+      "category": "Simulation",
+      "name": {
+        "en": "City Manager",
+        "ko": "시티 매니저",
+        "ja": "シティマネージャー"
+      },
+      "defaultLanguage": "en"
+    },
+    {
+      "id": "GAME_009",
+      "category": "Horror",
+      "name": {
+        "en": "Dark Shadows",
+        "ko": "어두운 그림자",
+        "ja": "ダークシャドウ"
+      },
+      "defaultLanguage": "en"
+    },
+    {
+      "id": "GAME_010",
+      "category": "Comedy",
+      "name": {
+        "en": "Funny Farm",
+        "ko": "재미있는 농장",
+        "ja": "ファニーファーム"
+      },
+      "defaultLanguage": "en"
+    },
+    {
+      "id": "GAME_011",
+      "category": "Drama",
+      "name": {
+        "en": "Life Stories",
+        "ko": "인생 이야기",
+        "ja": "ライフストーリー"
+      },
+      "defaultLanguage": "en"
+    },
+    {
+      "id": "GAME_012",
+      "category": "Fantasy",
+      "name": {
+        "en": "Magic Realm",
+        "ko": "마법의 영역",
+        "ja": "マジックレルム"
+      },
+      "defaultLanguage": "en"
+    },
+    {
+      "id": "GAME_013",
+      "category": "Sci-Fi",
+      "name": {
+        "en": "Space Explorer",
+        "ko": "우주 탐험가",
+        "ja": "スペースエクスプローラー"
+      },
+      "defaultLanguage": "en"
+    },
+    {
+      "id": "GAME_014",
+      "category": "Historical",
+      "name": {
+        "en": "Ancient Times",
+        "ko": "고대 시대",
+        "ja": "古代時代"
+      },
+      "defaultLanguage": "en"
+    },
+    {
+      "id": "GAME_015",
+      "category": "Educational",
+      "name": {
+        "en": "Learning Quest",
+        "ko": "학습 퀘스트",
+        "ja": "ラーニングクエスト"
+      },
+      "defaultLanguage": "en"
+    },
+    {
+      "id": "GAME_016",
+      "category": "Action",
+      "name": {
+        "en": "Battle Arena",
+        "ko": "배틀 아레나",
+        "ja": "バトルアリーナ"
+      },
+      "defaultLanguage": "en"
+    },
+    {
+      "id": "GAME_017",
+      "category": "Adventure",
+      "name": {
+        "en": "Treasure Hunt",
+        "ko": "보물 찾기",
+        "ja": "宝探し"
+      },
+      "defaultLanguage": "en"
+    },
+    {
+      "id": "GAME_018",
+      "category": "RPG",
+      "name": {
+        "en": "Hero's Journey",
+        "ko": "영웅의 여정",
+        "ja": "ヒーローズジャーニー"
+      },
+      "defaultLanguage": "en"
+    },
+    {
+      "id": "GAME_019",
+      "category": "Strategy",
+      "name": {
+        "en": "War Commander",
+        "ko": "전쟁 사령관",
+        "ja": "ウォーコマンダー"
+      },
+      "defaultLanguage": "en"
+    },
+    {
+      "id": "GAME_020",
+      "category": "Sports",
+      "name": {
+        "en": "Basketball Star",
+        "ko": "농구 스타",
+        "ja": "バスケットボールスター"
+      },
+      "defaultLanguage": "en"
+    },
+    {
+      "id": "GAME_021",
+      "category": "Racing",
+      "name": {
+        "en": "Drift Master",
+        "ko": "드리프트 마스터",
+        "ja": "ドリフトマスター"
+      },
+      "defaultLanguage": "en"
+    },
+    {
+      "id": "GAME_022",
+      "category": "Puzzle",
+      "name": {
+        "en": "Logic Master",
+        "ko": "로직 마스터",
+        "ja": "ロジックマスター"
+      },
+      "defaultLanguage": "en"
+    },
+    {
+      "id": "GAME_023",
+      "category": "Simulation",
+      "name": {
+        "en": "Farm Life",
+        "ko": "농장 생활",
+        "ja": "ファームライフ"
+      },
+      "defaultLanguage": "en"
+    },
+    {
+      "id": "GAME_024",
+      "category": "Horror",
+      "name": {
+        "en": "Haunted House",
+        "ko": "유령의 집",
+        "ja": "幽霊屋敷"
+      },
+      "defaultLanguage": "en"
+    },
+    {
+      "id": "GAME_025",
+      "category": "Comedy",
+      "name": {
+        "en": "Joke Factory",
+        "ko": "농담 공장",
+        "ja": "ジョークファクトリー"
+      },
+      "defaultLanguage": "en"
+    },
+    {
+      "id": "GAME_026",
+      "category": "Drama",
+      "name": {
+        "en": "Emotional Journey",
+        "ko": "감정의 여정",
+        "ja": "エモーショナルジャーニー"
+      },
+      "defaultLanguage": "en"
+    },
+    {
+      "id": "GAME_028",
+      "category": "Sci-Fi",
+      "name": {
+        "en": "Robot Wars",
+        "ko": "로봇 전쟁",
+        "ja": "ロボットウォーズ"
+      },
+      "defaultLanguage": "en"
+    },
+    {
+      "id": "GAME_029",
+      "category": "Historical",
+      "name": {
+        "en": "Medieval Times",
+        "ko": "중세 시대",
+        "ja": "中世時代"
+      },
+      "defaultLanguage": "en"
+    },
+    {
+      "id": "GAME_030",
+      "category": "Educational",
+      "name": {
+        "en": "Science Lab",
+        "ko": "과학 실험실",
+        "ja": "サイエンスラボ"
+      },
+      "defaultLanguage": "en"
+    }
+  ]
+}

@@ -1,223 +1,777 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
-/* PrimeVue Base Styles */
-.p-component {
-  font-family: 'Inter', sans-serif;
+/* ==========================================================================
+   1. Theme & Variables - Smilegate Vietnam Style
+   ========================================================================== */
+
+:root {
+  /* Primary Colors */
+  --primary-color: #fc4420;
+  --primary-color-hover: #e63d1c;
+  --primary-color-soft: #fff1df;
+
+  /* Text Colors */
+  --text-color: #1a1a1a;
+  --text-color-secondary: #4a5568;
+  --text-color-light: #718096;
+
+  /* Background Colors */
+  --bg-color: #f8fafc;
+  --bg-color-card: #ffffff;
+  --bg-color-light: #f7fafc;
+
+  /* Border Colors */
+  --border-color: #e2e8f0;
+  --border-color-light: #f1f5f9;
+
+  /* Status Colors */
+  --success-color: #10b981;
+  --warning-color: #f59e0b;
+  --danger-color: #ef4444;
+  --info-color: #3b82f6;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 0.75rem;
+  --spacing-lg: 1rem;
+  --spacing-xl: 1.5rem;
+  --spacing-2xl: 2rem;
+  --spacing-3xl: 3rem;
+
+  /* Border Radius */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+
+  /* Button Theme */
+  --btn-primary-bg: var(--primary-color);
+  --btn-primary-text: #ffffff;
+  --btn-primary-border: var(--primary-color);
+  --btn-primary-hover-bg: var(--primary-color-hover);
+  --btn-primary-hover-border: var(--primary-color-hover);
+
+  --btn-secondary-bg: #ffffff;
+  --btn-secondary-text: var(--text-color-secondary);
+  --btn-secondary-border: var(--border-color);
+  --btn-secondary-hover-bg: var(--bg-color-light);
+  --btn-secondary-hover-border: var(--text-color-light);
+
+  /* Component Sizes (Scaled Down) */
+  --input-height: 2.25rem;
+  --btn-height: 2.25rem;
+  --table-row-height: 3rem;
+  --card-padding: 1.25rem;
+  --section-gap: 1.5rem;
 }
 
-.p-button {
-  background: #0066CC;
-  border: 1px solid #0066CC;
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.p-button:hover {
-  background: #004499;
-  border-color: #004499;
-}
-
-.p-button.p-button-text {
-  background: transparent;
-  border-color: transparent;
-  color: #0066CC;
-}
-
-.p-button.p-button-text:hover {
-  background: rgba(0, 102, 204, 0.1);
-}
-
-.p-button.p-button-danger {
-  background: #dc3545;
-  border-color: #dc3545;
-}
-
-.p-button.p-button-danger:hover {
-  background: #c82333;
-  border-color: #c82333;
-}
-
-.p-inputtext {
-  width: 100%;
-  padding: 0.5rem 0.75rem;
-  border: 1px solid #d1d5db;
-  border-radius: 0.5rem;
-  font-size: 0.875rem;
-  transition: border-color 0.2s;
-}
-
-.p-inputtext:focus {
-  outline: none;
-  border-color: #0066CC;
-  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
-}
-
-.p-dropdown {
-  width: 100%;
-}
-
-.p-dropdown .p-dropdown-trigger {
-  width: 2.5rem;
-}
-
-.p-datatable {
-  border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
-  overflow: hidden;
-}
-
-.p-datatable .p-datatable-header {
-  background: #f9fafb;
-  padding: 1rem;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-.p-datatable .p-datatable-thead>tr>th {
-  background: #f9fafb;
-  border-bottom: 1px solid #e5e7eb;
-  padding: 0.75rem 1rem;
-  font-weight: 600;
-  color: #374151;
-}
-
-.p-datatable .p-datatable-tbody>tr>td {
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid #f3f4f6;
-}
-
-.p-datatable .p-datatable-tbody>tr:hover {
-  background: #f9fafb;
-}
-
-.p-checkbox {
-  width: 1.25rem;
-  height: 1.25rem;
-}
-
-.p-checkbox .p-checkbox-box {
-  border: 2px solid #d1d5db;
-  border-radius: 0.25rem;
-  background: white;
-}
-
-.p-checkbox .p-checkbox-box.p-highlight {
-  background: #0066CC;
-  border-color: #0066CC;
-}
-
-.p-paginator {
-  padding: 1rem;
-  background: #f9fafb;
-  border-top: 1px solid #e5e7eb;
-}
-
-.p-dialog {
-  border-radius: 0.5rem;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-}
-
-.p-dialog .p-dialog-header {
-  background: #f9fafb;
-  border-bottom: 1px solid #e5e7eb;
-  padding: 1rem 1.5rem;
-}
-
-.p-dialog .p-dialog-content {
-  padding: 1.5rem;
-}
-
-.p-dialog .p-dialog-footer {
-  background: #f9fafb;
-  border-top: 1px solid #e5e7eb;
-  padding: 1rem 1.5rem;
-}
-
-.p-toast {
-  z-index: 1000;
-}
-
-.p-toast .p-toast-message {
-  border-radius: 0.5rem;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-}
-
-.p-toast .p-toast-message.p-toast-message-success {
-  background: #d1fae5;
-  border: 1px solid #10b981;
-  color: #065f46;
-}
-
-.p-toast .p-toast-message.p-toast-message-error {
-  background: #fee2e2;
-  border: 1px solid #ef4444;
-  color: #991b1b;
-}
+/* ==========================================================================
+   2. Base Styles
+   ========================================================================== */
 
 * {
   box-sizing: border-box;
 }
 
 body {
-  font-family: 'Inter', sans-serif;
-  background-color: #f8fafc;
-  margin: 0;
-  padding: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  line-height: 1.6;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0 var(--spacing-lg);
 }
 
+/* ==========================================================================
+   3. Header & Navigation
+   ========================================================================== */
+
 .page-header {
-  background: linear-gradient(135deg, #0066CC 0%, #004499 100%);
-  color: white;
-  padding: 2rem 0;
-  margin-bottom: 2rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.95);
+  border-bottom: 1px solid var(--border-color-light);
+  padding: var(--spacing-md) 0;
 }
 
 .logo {
-  font-weight: 700;
   font-size: 1.5rem;
-  margin-bottom: 0.5rem;
+  font-weight: 800;
+  color: var(--primary-color);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
 }
 
-.logo-subtitle {
-  font-weight: 400;
-  opacity: 0.9;
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xl);
+}
+
+.nav-menu a {
+  color: var(--text-color-secondary);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.nav-menu a.router-link-active {
+  color: var(--primary-color);
+}
+
+/* ==========================================================================
+   4. Main Content
+   ========================================================================== */
+
+main {
+  margin-top: 4rem;
+  min-height: calc(100vh - 4rem);
+  padding: var(--spacing-xl) 0;
+}
+
+.page-title-section {
+  margin-bottom: var(--section-gap);
+  text-align: center;
 }
 
 .page-title {
   font-size: 2rem;
-  font-weight: 600;
-  margin: 1rem 0;
+  font-weight: 700;
+  color: var(--text-color);
+  margin: 0 0 var(--spacing-sm) 0;
 }
 
-.features-list {
-  list-style: none;
+.page-subtitle {
+  font-size: 1rem;
+  color: var(--text-color-light);
+  margin: 0;
+}
+
+/* ==========================================================================
+   5. Card Components
+   ========================================================================== */
+
+.search-section,
+.game-collection {
+  background: var(--bg-color-card);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  margin-bottom: var(--section-gap);
+  overflow: hidden;
+}
+
+.search-section {
+  padding: var(--card-padding);
+}
+
+.game-collection .card-header {
+  padding: var(--card-padding);
+  border-bottom: 1px solid var(--border-color-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.game-collection .card-body {
+  padding: var(--card-padding);
+}
+
+/* ==========================================================================
+   6. PrimeVue Component Overrides
+   ========================================================================== */
+
+/* Button Theme */
+.p-button {
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0 var(--spacing-lg);
+  height: var(--btn-height);
+  border: 1px solid transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Primary Button */
+.p-button:not(.p-button-outlined):not(.p-button-text):not(.p-button-link) {
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  border-color: var(--btn-primary-border);
+}
+
+.p-button:not(.p-button-outlined):not(.p-button-text):not(.p-button-link):hover {
+  background: var(--btn-primary-hover-bg);
+  border-color: var(--btn-primary-hover-border);
+}
+
+/* Secondary Button (Outlined) */
+.p-button.p-button-outlined {
+  background: var(--btn-secondary-bg);
+  color: var(--btn-secondary-text);
+  border-color: var(--btn-secondary-border);
+}
+
+.p-button.p-button-outlined:hover {
+  background: var(--btn-secondary-hover-bg);
+  border-color: var(--btn-secondary-hover-border);
+}
+
+/* Text Button */
+.p-button.p-button-text {
+  background: transparent;
+  color: var(--btn-secondary-text);
+  border-color: transparent;
+}
+
+.p-button.p-button-text:hover {
+  background: var(--btn-secondary-hover-bg);
+  color: var(--text-color);
+}
+
+/* Danger Button */
+.p-button.p-button-danger {
+  background: var(--danger-color);
+  border-color: var(--danger-color);
+  color: white;
+}
+
+.p-button.p-button-danger:hover {
+  background: #dc2626;
+  border-color: #dc2626;
+}
+
+/* Small Button */
+.p-button.p-button-sm {
+  height: 2rem;
+  font-size: 0.75rem;
+  padding: 0 var(--spacing-md);
+}
+
+/* Input Fields */
+.p-inputtext {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  padding: 0 var(--spacing-md);
+  font-size: 0.875rem;
+  height: var(--input-height);
+  background: var(--bg-color-card);
+  color: var(--text-color);
+}
+
+.p-inputtext:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(252, 68, 32, 0.1);
+}
+
+/* Dropdown */
+.p-dropdown {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  height: var(--input-height);
+}
+
+.p-dropdown:not(.p-disabled):hover {
+  border-color: var(--text-color-light);
+}
+
+.p-dropdown:not(.p-disabled).p-focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(252, 68, 32, 0.1);
+}
+
+.p-dropdown .p-dropdown-label {
+  padding: 0 var(--spacing-md);
+  font-size: 0.875rem;
+}
+
+/* DataTable */
+.p-datatable {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.p-datatable .p-datatable-thead>tr>th {
+  background: var(--bg-color-light);
+  border-bottom: 1px solid var(--border-color);
+  padding: var(--spacing-md) var(--spacing-lg);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-color-secondary);
+}
+
+.p-datatable .p-datatable-tbody>tr {
+  border-bottom: 1px solid var(--border-color-light);
+  height: var(--table-row-height);
+}
+
+.p-datatable .p-datatable-tbody>tr>td {
+  padding: var(--spacing-md) var(--spacing-lg);
+  font-size: 0.875rem;
+  vertical-align: middle;
+}
+
+/* Pagination */
+.p-paginator {
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: var(--bg-color-light);
+  border-top: 1px solid var(--border-color-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+}
+
+.p-paginator .p-paginator-pages .p-paginator-page {
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background: var(--bg-color-card);
+  color: var(--text-color-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.p-paginator .p-paginator-pages .p-paginator-page:hover {
+  background: var(--primary-color-soft);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+}
+
+.p-paginator .p-paginator-first,
+.p-paginator .p-paginator-prev,
+.p-paginator .p-paginator-next,
+.p-paginator .p-paginator-last {
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background: var(--bg-color-card);
+  color: var(--text-color-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.p-paginator .p-paginator-first:hover,
+.p-paginator .p-paginator-prev:hover,
+.p-paginator .p-paginator-next:hover,
+.p-paginator .p-paginator-last:hover {
+  background: var(--primary-color-soft);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.p-paginator .p-paginator-current {
+  font-size: 0.875rem;
+  color: var(--text-color-secondary);
+  font-weight: 500;
+}
+
+.p-paginator .p-dropdown {
+  height: 2rem;
+  min-width: 4rem;
+}
+
+/* ==========================================================================
+   7. Custom Components
+   ========================================================================== */
+
+.category-badge {
+  background: var(--primary-color-soft);
+  color: var(--primary-color);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.language-flag {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.625rem;
+  font-weight: 700;
+  color: white;
+  text-transform: uppercase;
+}
+
+.language-flag.en {
+  background: #3b82f6;
+}
+
+.language-flag.ko {
+  background: #ef4444;
+}
+
+.language-flag.ja {
+  background: #10b981;
+}
+
+.language-flag.zh {
+  background: #f59e0b;
+}
+
+.language-flag.fr {
+  background: #8b5cf6;
+}
+
+.language-flag.de {
+  background: #6b7280;
+}
+
+.language-flag.es {
+  background: #f97316;
+}
+
+.language-flag.pt {
+  background: #059669;
+}
+
+.action-btn .p-button {
+  width: 2rem;
+  height: 2rem;
   padding: 0;
-  margin: 1rem 0;
+  border-radius: var(--radius-sm);
 }
 
-.features-list li {
-  padding: 0.25rem 0;
-  position: relative;
-  padding-left: 1.5rem;
+.action-btn.edit .p-button {
+  color: var(--info-color);
 }
 
-.features-list li::before {
-  content: "•";
-  color: #0066CC;
-  font-weight: bold;
-  position: absolute;
-  left: 0;
+.action-btn.delete .p-button {
+  color: var(--danger-color);
 }
 
-.supported-languages {
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: var(--spacing-3xl) var(--spacing-xl);
+  color: var(--text-color-light);
+}
+
+.empty-state i {
+  font-size: 3rem;
+  margin-bottom: var(--spacing-lg);
+  color: var(--border-color);
+}
+
+.empty-state h3 {
+  font-size: 1.25rem;
   font-weight: 600;
-  color: #0066CC;
+  margin: 0 0 var(--spacing-sm) 0;
+  color: var(--text-color);
+}
+
+.empty-state p {
+  margin: 0 0 var(--spacing-xl) 0;
+  font-size: 0.875rem;
+}
+
+/* Skeleton Loading */
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Search Highlight */
+.search-highlight {
+  background: #fef3c7;
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   8. Responsive Design
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 var(--spacing-md);
+  }
+
+  .page-title {
+    font-size: 1.75rem;
+  }
+
+  .search-section,
+  .game-collection {
+    border-radius: var(--radius-lg);
+  }
+
+  .search-section {
+    padding: var(--spacing-lg);
+  }
+
+  .game-collection .card-header,
+  .game-collection .card-body {
+    padding: var(--spacing-lg);
+  }
+
+  .p-datatable .p-datatable-thead>tr>th,
+  .p-datatable .p-datatable-tbody>tr>td {
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+
+  .p-paginator {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+}
+
+@media (max-width: 480px) {
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .search-section,
+  .game-collection .card-header,
+  .game-collection .card-body {
+    padding: var(--spacing-md);
+  }
+
+  .p-button {
+    font-size: 0.75rem;
+    padding: 0 var(--spacing-md);
+  }
+}
+
+/* ==========================================================================
+   9. Form & Additional Components
+   ========================================================================== */
+
+/* Breadcrumb */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-2xl);
+  padding: var(--spacing-md) 0;
+}
+
+.breadcrumb-link {
+  color: var(--text-color-secondary);
+  text-decoration: none;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumb-separator {
+  color: var(--text-color-light);
+  font-size: 12px;
+}
+
+.breadcrumb-current {
+  color: var(--text-color);
+  font-weight: 600;
+}
+
+/* Form Card */
+.form-card {
+  background: var(--bg-color-card);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+.form-card .card-header {
+  background: var(--bg-color-card);
+  padding: var(--spacing-xl) var(--spacing-2xl);
+  border-bottom: 1px solid var(--border-color-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.form-card .card-header h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-color);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.form-card .card-header .pi {
+  font-size: 1.5rem;
+  color: var(--primary-color);
+}
+
+.form-card .card-body {
+  padding: var(--spacing-2xl);
+}
+
+/* Form Groups */
+.form-group {
+  margin-bottom: var(--spacing-lg);
+}
+
+.form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: var(--spacing-sm);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.form-hint {
+  font-size: 0.75rem;
+  color: var(--text-color-light);
+  margin-top: var(--spacing-xs);
+}
+
+/* Language Input Groups */
+.language-input-group {
+  position: relative;
+}
+
+.language-input-group .form-label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+/* Form Actions */
+.form-actions {
+  display: flex;
+  gap: var(--spacing-md);
+  padding-top: var(--spacing-xl);
+  border-top: 1px solid var(--border-color-light);
+  margin-top: var(--spacing-xl);
+}
+
+.form-actions .p-button {
+  min-width: 120px;
+}
+
+/* Validation Styles */
+.p-error {
+  color: var(--danger-color) !important;
+  font-size: 0.75rem !important;
+  margin-top: var(--spacing-xs) !important;
+}
+
+.p-invalid {
+  border-color: var(--danger-color) !important;
+}
+
+.p-invalid:focus {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+}
+
+/* Confirmation Dialog */
+.confirmation-content {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg) 0;
+}
+
+.confirmation-content i {
+  flex-shrink: 0;
+}
+
+.confirmation-content span {
+  line-height: 1.5;
+}
+
+/* Responsive Form */
+@media (max-width: 768px) {
+  .form-card .card-header {
+    padding: var(--spacing-lg) var(--spacing-xl);
+  }
+
+  .form-card .card-body {
+    padding: var(--spacing-xl);
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .form-actions .p-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-card .card-header {
+    padding: var(--spacing-md) var(--spacing-lg);
+  }
+
+  .form-card .card-body {
+    padding: var(--spacing-lg);
+  }
+
+  .form-card .card-header h2 {
+    font-size: 1.25rem;
+  }
 }
