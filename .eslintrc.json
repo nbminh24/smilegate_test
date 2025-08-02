@@ -1,0 +1,10 @@
+{
+    "extends": [
+        "@nuxt/eslint-config"
+    ],
+    "rules": {
+        "vue/multi-word-component-names": "off",
+        "vue/no-unused-vars": "warn",
+        "no-unused-vars": "warn"
+    }
+}

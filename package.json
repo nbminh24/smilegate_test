@@ -1,0 +1,30 @@
+{
+    "name": "smilegate-game-management",
+    "version": "1.0.0",
+    "description": "Game Management System for Smilegate Vietnam",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "nuxt build",
+        "dev": "nuxt dev",
+        "generate": "nuxt generate",
+        "preview": "nuxt preview",
+        "postinstall": "nuxt prepare",
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix"
+    },
+    "devDependencies": {
+        "@nuxt/devtools": "latest",
+        "@nuxt/eslint-config": "^0.2.0",
+        "@unocss/nuxt": "^0.58.0",
+        "@types/node": "^20.8.0",
+        "eslint": "^8.51.0",
+        "nuxt": "^3.8.0",
+        "typescript": "^5.2.0"
+    },
+    "dependencies": {
+        "primevue": "^4.0.0",
+        "primeicons": "^6.0.0"
+    },
+    "packageManager": "bun@1.0.0"
+}

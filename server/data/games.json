@@ -1,0 +1,65 @@
+[
+  {
+    "id": "ZELDA",
+    "category": "ADVENTURE",
+    "name": [
+      {
+        "language": "EN",
+        "value": "The Legend of Zelda: Breath of the Wild",
+        "isDefault": true
+      },
+      {
+        "language": "KO",
+        "value": "젤다의 전설: 브레스 오브 더 와일드",
+        "isDefault": false
+      },
+      {
+        "language": "JA",
+        "value": "ゼルダの伝説: ブレス オブ ザ ワイルド",
+        "isDefault": false
+      }
+    ]
+  },
+  {
+    "id": "UNCHARTED4",
+    "category": "ADVENTURE",
+    "name": [
+      {
+        "language": "EN",
+        "value": "Uncharted 4: A Thief's End",
+        "isDefault": true
+      },
+      {
+        "language": "KO",
+        "value": "언차티드 4: 어 씨프스 엔드",
+        "isDefault": false
+      },
+      {
+        "language": "JA",
+        "value": "アンチャーテッド 4: 海賊王と最後の秘宝",
+        "isDefault": false
+      }
+    ]
+  },
+  {
+    "id": "TOMB_RAIDER",
+    "category": "ADVENTURE",
+    "name": [
+      {
+        "language": "EN",
+        "value": "Tomb Raider",
+        "isDefault": true
+      },
+      {
+        "language": "KO",
+        "value": "툼 레이더",
+        "isDefault": false
+      },
+      {
+        "language": "JA",
+        "value": "トゥームレイダー",
+        "isDefault": false
+      }
+    ]
+  }
+] 
