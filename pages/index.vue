@@ -73,7 +73,7 @@
           </div>
         </div>
         
-        <div class="card-body">
+        <div class="card-body p-6">
           <!-- Loading State -->
           <div v-if="loading" class="space-y-4">
             <div v-for="i in 5" :key="i" class="skeleton h-20 rounded-lg"></div>
@@ -95,30 +95,17 @@
           <!-- Data Table -->
           <DataTable 
             v-else
-            :value="filteredGames" 
+            :value="paginatedGames" 
             :loading="loading" 
             v-model:selection="selectedGames" 
             dataKey="id"
-            :paginator="true" 
-            :rows="10"
-            :rowsPerPageOptions="[5, 10, 20, 50]" 
-            paginatorPosition="bottom"
-            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} games"
             class="w-full"
             :pt="{
-              root: { style: 'table-layout: fixed; width: 100%' },
-              paginator: { root: { class: 'p-4 bg-white border-t border-gray-200' } },
-              bodyrow: (options) => ({
-                class: [
-                  'table-row',
-                  'h-14',
-                  'bg-white'
-                ]
-              }),
-              cell: { class: 'table-cell' }
+              bodyrow: { class: 'h-16' },
+              paginator: {
+                current: { class: 'text-sm text-gray-600' }
+              }
             }"
-
           >
             <!-- Selection Column -->
             <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
@@ -198,6 +185,38 @@
               </template>
             </Column>
           </DataTable>
+
+          <!-- Custom Paginator -->
+          <div v-if="totalPages > 1" class="flex items-center justify-between flex-wrap gap-4 mt-6 pt-4 border-t border-gray-200">
+            <!-- Rows Per Page Dropdown -->
+            <div class="flex items-center gap-2">
+              <label for="rowsPerPage" class="text-sm text-gray-600">Rows:</label>
+              <Dropdown 
+                v-model="rowsPerPage" 
+                :options="[10, 20, 50, 100]" 
+                class="w-24"
+                :pt="{
+                  panel: { class: 'bg-white dark:bg-gray-800 shadow-lg rounded-lg border dark:border-gray-700' }
+                }"
+              />
+            </div>
+
+            <!-- Pagination Controls -->
+            <div class="flex items-center gap-2">
+              <Button @click="goToPage(1)" :disabled="currentPage === 1" icon="pi pi-angle-double-left" class="paginator-button" />
+              <Button @click="prevPage" :disabled="currentPage === 1" icon="pi pi-angle-left" class="paginator-button" />
+              <div class="text-sm text-gray-600">
+                Page <span class="font-semibold text-gray-800">{{ currentPage }}</span> of <span class="font-semibold text-gray-800">{{ totalPages }}</span>
+              </div>
+              <Button @click="nextPage" :disabled="currentPage === totalPages" icon="pi pi-angle-right" class="paginator-button" />
+              <Button @click="goToPage(totalPages)" :disabled="currentPage === totalPages" icon="pi pi-angle-double-right" class="paginator-button" />
+            </div>
+
+            <!-- Page Info -->
+            <div class="text-sm text-gray-600">
+              Showing <span class="font-semibold text-gray-800">{{ (currentPage - 1) * rowsPerPage + 1 }} - {{ Math.min(currentPage * rowsPerPage, filteredGames.length) }}</span> of <span class="font-semibold text-gray-800">{{ filteredGames.length }}</span> games
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -271,10 +290,70 @@ const selectedCategory = ref(null)
 const selectedGames = ref([])
 const deleting = ref(false)
 
+// Paginator State
+const currentPage = ref(1)
+const rowsPerPage = ref(10)
+
 // Dialog states
 const showBulkDeleteDialog = ref(false)
 const showSingleDeleteDialog = ref(false)
 const gameToDelete = ref(null)
+
+// Paginator computed properties and methods
+const totalPages = computed(() => Math.ceil(filteredGames.value.length / rowsPerPage.value))
+
+const pageNumbers = computed(() => {
+  const pages = []
+  const maxVisible = 5
+
+  if (totalPages.value <= maxVisible) {
+    for (let i = 1; i <= totalPages.value; i++) {
+      pages.push(i)
+    }
+  } else {
+    pages.push(1)
+    if (currentPage.value > 3) {
+      pages.push('...')
+    }
+
+    let start = Math.max(2, currentPage.value - 1)
+    let end = Math.min(totalPages.value - 1, currentPage.value + 1)
+
+    if (currentPage.value <= 2) {
+        start = 2;
+        end = 4;
+    } else if (currentPage.value >= totalPages.value - 1) {
+        start = totalPages.value - 3;
+        end = totalPages.value - 1;
+    }
+
+    for (let i = start; i <= end; i++) {
+      pages.push(i)
+    }
+
+    if (currentPage.value < totalPages.value - 2) {
+      pages.push('...')
+    }
+    pages.push(totalPages.value)
+  }
+  return pages
+})
+
+function goToPage(page) {
+  currentPage.value = page
+}
+
+function prevPage() {
+  if (currentPage.value > 1) {
+    currentPage.value--
+  }
+}
+
+function nextPage() {
+  if (currentPage.value < totalPages.value) {
+    currentPage.value++
+  }
+}
 
 // Category colors for filter dropdown
 const categoryColors = {
@@ -297,6 +376,12 @@ const categoryOptions = computed(() => {
     ...cats.map(cat => ({ label: cat, value: cat }))
   ]
 })
+
+const paginatedGames = computed(() => {
+  const start = (currentPage.value - 1) * rowsPerPage.value;
+  const end = start + rowsPerPage.value;
+  return filteredGames.value.slice(start, end);
+});
 
 const filteredGames = computed(() => {
   let filtered = games.value

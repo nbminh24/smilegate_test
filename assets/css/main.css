@@ -212,6 +212,50 @@ main {
 }
 
 /* ==========================================================================
+   Paginator Styles
+   ========================================================================== */
+
+.paginator-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-color-card);
+  color: var(--text-color-secondary);
+  min-width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--radius-md);
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+  font-weight: 500;
+}
+
+.paginator-button:hover {
+  background-color: var(--bg-color-light);
+  border-color: var(--text-color-light);
+}
+
+.paginator-button-active {
+  background-color: var(--primary-color-soft);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+.input-field {
+    height: 2.25rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-color-card);
+    padding: 0 0.75rem;
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(252, 68, 32, 0.2);
+}
+
+/* ==========================================================================
    7. Custom Components
    ========================================================================== */
 
