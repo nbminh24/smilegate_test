@@ -5,8 +5,8 @@ export default defineNuxtConfig({
         compatibilityDate: '2025-08-02'
     },
     modules: [
-        '@unocss/nuxt',
-        '@primevue/nuxt-module'
+        '@primevue/nuxt-module',
+        '@unocss/nuxt'
     ],
     primevue: {
         options: {

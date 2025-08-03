@@ -8,41 +8,53 @@
       </div>
 
       <!-- Search Section Card -->
-      <div class="card p-6">
-        <div class="flex flex-col md:flex-row gap-6 items-center justify-between">
-          <div class="flex flex-col md:flex-row gap-6 flex-1">
-            <div class="flex-1">
-              <InputText 
-                v-model="searchKeyword" 
-                placeholder="Search games by ID, name, or category..." 
-                class="input-field w-full"
+      <div class="card p-4">
+        <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
+          <div class="flex-grow grid grid-cols-1 md:grid-cols-3 gap-x-4 bg-gray-100/80 dark:bg-gray-800/80 p-1 rounded-xl border-2 border-transparent transition-all duration-300 focus-within:border-smilegate-blue focus-within:bg-white">
+            <div class="relative md:col-span-2">
+              <i class="pi pi-search absolute top-1/2 -translate-y-1/2 left-4 text-gray-400"></i>
+              <InputText
+                v-model="searchKeyword"
+                placeholder="Search games by ID, name, or category..."
+                class="w-full !pl-11 bg-transparent border-none focus:ring-0 h-12 text-base"
               />
             </div>
-            <Dropdown 
-              v-model="selectedCategory" 
-              :options="categoryOptions" 
-              optionLabel="label"
-              optionValue="value"
-              placeholder="Filter by Category" 
-              class="input-field w-full md:w-64"
-              showClear
-              :showClear="selectedCategory !== null"
-            >
-              <template #option="{ option }">
-                <div class="flex items-center gap-2">
-                  <div v-if="option.value" class="w-3 h-3 rounded-full" :style="{ backgroundColor: getCategoryColor(option.value) }"></div>
-                  <span>{{ option.label }}</span>
+            <div class="relative md:col-span-1">
+              <Button 
+                @click="toggleCategoryFilter"
+                :class="['w-full bg-transparent border-none focus:ring-0 h-12 text-left px-3 flex items-center justify-between text-base', selectedCategory ? 'text-gray-800' : 'text-gray-500']"
+              >
+                <span>{{ selectedCategory ? selectedCategory : 'Category' }}</span>
+                <i class="pi pi-chevron-down text-gray-400"></i>
+              </Button>
+              <Button 
+                v-if="selectedCategory" 
+                icon="pi pi-times" 
+                class="absolute top-1/2 -translate-y-1/2 right-10 w-6 h-6 rounded-full !p-0 bg-gray-200 text-gray-600 hover:bg-gray-300 hover:text-gray-800"
+                @click.stop="clearCategoryFilter"
+              />
+              <OverlayPanel ref="categoryOverlay" class="!p-0 !shadow-2xl !border-none !rounded-xl mt-2">
+                <div class="bg-white rounded-xl p-4">
+                  <div class="grid grid-cols-3 gap-2">
+                    <Button 
+                      v-for="category in categoryOptions" 
+                      :key="category.value" 
+                      :label="category.label"
+                      @click="selectCategory(category.value)"
+                      :class="['text-sm !font-normal !py-2 !border-none', selectedCategory === category.value ? '!bg-smilegate-blue !text-white' : '!bg-gray-100 !text-gray-700 hover:!bg-gray-200']"
+                    />
+                  </div>
                 </div>
-              </template>
-            </Dropdown>
+              </OverlayPanel>
+            </div>
           </div>
-          <div class="flex gap-4">
-            <Button @click="refreshGames" class="btn-secondary">
+          <div class="flex-shrink-0 flex items-center gap-4">
+            <Button @click="refreshGames" class="btn-warning">
               <i class="pi pi-refresh mr-2"></i>
               Refresh
             </Button>
             <NuxtLink to="/register/new">
-              <Button class="btn-primary">
+              <Button class="btn-warning">
                 <i class="pi pi-plus mr-2"></i>
                 New Game
               </Button>
@@ -101,10 +113,7 @@
             dataKey="id"
             class="w-full"
             :pt="{
-              bodyrow: { class: 'h-16' },
-              paginator: {
-                current: { class: 'text-sm text-gray-600' }
-              }
+              bodyrow: { class: 'h-16' }
             }"
           >
             <!-- Selection Column -->
@@ -276,17 +285,17 @@
       </template>
     </Dialog>
 
-    <Toast />
+
   </main>
 </template>
 
 <script setup>
+import { ref, computed, onMounted } from 'vue'
+
 const { $toast } = useNuxtApp()
+const categoryOverlay = ref()
 
 // Reactive data
-const tableStyles = {
-  root: { style: 'table-layout: fixed; width: 100%' }
-}
 const games = ref([])
 const loading = ref(true)
 const searchKeyword = ref('')
@@ -303,89 +312,29 @@ const showBulkDeleteDialog = ref(false)
 const showSingleDeleteDialog = ref(false)
 const gameToDelete = ref(null)
 
-// Paginator computed properties and methods
+// Computed properties
 const totalPages = computed(() => Math.ceil(filteredGames.value.length / rowsPerPage.value))
 
-const pageNumbers = computed(() => {
-  const pages = []
-  const maxVisible = 5
-
-  if (totalPages.value <= maxVisible) {
-    for (let i = 1; i <= totalPages.value; i++) {
-      pages.push(i)
-    }
-  } else {
-    pages.push(1)
-    if (currentPage.value > 3) {
-      pages.push('...')
-    }
-
-    let start = Math.max(2, currentPage.value - 1)
-    let end = Math.min(totalPages.value - 1, currentPage.value + 1)
-
-    if (currentPage.value <= 2) {
-        start = 2;
-        end = 4;
-    } else if (currentPage.value >= totalPages.value - 1) {
-        start = totalPages.value - 3;
-        end = totalPages.value - 1;
-    }
-
-    for (let i = start; i <= end; i++) {
-      pages.push(i)
-    }
-
-    if (currentPage.value < totalPages.value - 2) {
-      pages.push('...')
-    }
-    pages.push(totalPages.value)
-  }
-  return pages
-})
-
-function goToPage(page) {
-  currentPage.value = page
-}
-
-function prevPage() {
-  if (currentPage.value > 1) {
-    currentPage.value--
-  }
-}
-
-function nextPage() {
-  if (currentPage.value < totalPages.value) {
-    currentPage.value++
-  }
-}
-
-// Category colors for filter dropdown
-const categoryColors = {
-  'Adventure': '#3b82f6',
-  'RPG': '#ef4444',
-  'Strategy': '#10b981',
-  'Sports': '#f59e0b',
-  'Racing': '#8b5cf6',
-  'Puzzle': '#6b7280',
-  'Simulation': '#f97316',
-  'Horror': '#059669',
-  'Comedy': '#ec4899'
-}
-
-// Computed properties
-const categoryOptions = computed(() => {
-  const cats = [...new Set(games.value.map(game => game.category))]
-  return [
-    { label: 'All Categories', value: null },
-    ...cats.map(cat => ({ label: cat, value: cat }))
-  ]
-})
-
-const paginatedGames = computed(() => {
-  const start = (currentPage.value - 1) * rowsPerPage.value;
-  const end = start + rowsPerPage.value;
-  return filteredGames.value.slice(start, end);
-});
+const categoryOptions = ref([
+  { label: 'Action', value: 'ACTION' },
+  { label: 'Adventure', value: 'ADVENTURE' },
+  { label: 'RPG', value: 'RPG' },
+  { label: 'Strategy', value: 'STRATEGY' },
+  { label: 'Sports', value: 'SPORTS' },
+  { label: 'Racing', value: 'RACING' },
+  { label: 'Puzzle', value: 'PUZZLE' },
+  { label: 'Simulation', value: 'SIMULATION' },
+  { label: 'Horror', value: 'HORROR' },
+  { label: 'Comedy', value: 'COMEDY' },
+  { label: 'Drama', value: 'DRAMA' },
+  { label: 'Sci-Fi', value: 'SCI_FI' },
+  { label: 'Fantasy', value: 'FANTASY' },
+  { label: 'Fighting', value: 'FIGHTING' },
+  { label: 'Platformer', value: 'PLATFORMER' },
+  { label: 'Stealth', value: 'STEALTH' },
+  { label: 'Survival', value: 'SURVIVAL' },
+  { label: 'Music', value: 'MUSIC' }
+])
 
 const filteredGames = computed(() => {
   let filtered = games.value
@@ -408,9 +357,42 @@ const filteredGames = computed(() => {
   return filtered
 })
 
+const toggleCategoryFilter = (event) => {
+  categoryOverlay.value.toggle(event)
+}
+
+const selectCategory = (categoryValue) => {
+  selectedCategory.value = categoryValue
+  categoryOverlay.value.hide()
+}
+
+const clearCategoryFilter = () => {
+  selectedCategory.value = null
+}
+
+const paginatedGames = computed(() => {
+  const start = (currentPage.value - 1) * rowsPerPage.value;
+  const end = start + rowsPerPage.value;
+  return filteredGames.value.slice(start, end);
+});
+
 // Methods
-const getCategoryColor = (category) => {
-  return categoryColors[category] || '#6b7280'
+function goToPage(page) {
+  if (page >= 1 && page <= totalPages.value) {
+    currentPage.value = page
+  }
+}
+
+function prevPage() {
+  if (currentPage.value > 1) {
+    currentPage.value--
+  }
+}
+
+function nextPage() {
+  if (currentPage.value < totalPages.value) {
+    currentPage.value++
+  }
 }
 
 const highlightText = (text, keyword) => {
@@ -531,5 +513,3 @@ onMounted(() => {
   fetchGames()
 })
 </script>
-
-
