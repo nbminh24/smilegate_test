@@ -109,7 +109,6 @@
             :pt="{
               root: { style: 'table-layout: fixed; width: 100%' },
               paginator: { root: { class: 'p-4 bg-white border-t border-gray-200' } },
-
               bodyrow: (options) => ({
                 class: [
                   'table-row',
@@ -125,7 +124,7 @@
             <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
             
             <!-- Game ID Column -->
-                        <Column field="id" header="Game ID" :sortable="true" style="width: 15%" headerClass="!text-left bg-gray-50 !py-4">
+            <Column field="id" header="Game ID" :sortable="true" style="width: 15%" headerClass="!text-left !pl-6 bg-gray-50 !py-4" bodyClass="!pl-6">
               <template #body="{ data }">
                 <span class="font-mono text-sm font-semibold text-gray-700">
                   <span v-html="highlightText(data.id, searchKeyword)"></span>
@@ -134,7 +133,7 @@
             </Column>
             
             <!-- Category Column -->
-                        <Column field="category" header="Category" :sortable="true" style="width: 15%" headerClass="!text-left bg-gray-50 !py-4">
+            <Column field="category" header="Category" :sortable="true" style="width: 15%" headerClass="!text-left !pl-6 bg-gray-50 !py-4" bodyClass="!pl-6">
               <template #body="{ data }">
                 <span class="category-badge">
                   <span v-html="highlightText(data.category, searchKeyword)"></span>
@@ -143,7 +142,7 @@
             </Column>
             
             <!-- English Name Column -->
-                        <Column field="name.en" header="English Name" :sortable="true" style="width: 20%" headerClass="!text-left bg-gray-50 !py-4">
+            <Column field="name.en" header="English Name" :sortable="true" style="width: 20%" headerClass="!text-left !pl-6 bg-gray-50 !py-4" bodyClass="!pl-6">
               <template #body="{ data }">
                 <div class="flex items-center gap-3">
                   <span class="language-flag en">EN</span>
@@ -155,7 +154,7 @@
             </Column>
             
             <!-- Korean Name Column -->
-                        <Column field="name.ko" header="Korean Name" :sortable="true" style="width: 20%" headerClass="!text-left bg-gray-50 !py-4">
+            <Column field="name.ko" header="Korean Name" :sortable="true" style="width: 20%" headerClass="!text-left !pl-6 bg-gray-50 !py-4" bodyClass="!pl-6">
               <template #body="{ data }">
                 <div class="flex items-center gap-3">
                   <span class="language-flag ko">KO</span>
@@ -167,7 +166,7 @@
             </Column>
             
             <!-- Japanese Name Column -->
-                        <Column field="name.ja" header="Japanese Name" :sortable="true" style="width: 20%" headerClass="!text-left bg-gray-50 !py-4">
+            <Column field="name.ja" header="Japanese Name" :sortable="true" style="width: 20%" headerClass="!text-left !pl-6 bg-gray-50 !py-4" bodyClass="!pl-6">
               <template #body="{ data }">
                 <div class="flex items-center gap-3">
                   <span class="language-flag ja">JA</span>
@@ -179,21 +178,21 @@
             </Column>
             
             <!-- Actions Column -->
-            <Column header="Actions" style="width: 10%" headerClass="!text-left bg-gray-50 !py-4" :frozen="true" alignFrozen="right">
+            <Column header="Actions" style="width: 10%" headerClass="!text-left !pl-6 bg-gray-50 !py-4" :frozen="true" alignFrozen="right">
               <template #body="{ data }">
                 <div class="flex gap-2">
                   <NuxtLink :to="`/register/${data.id}`">
                     <Button
-                      class="btn-secondary !p-2 w-8 h-8"
-                      v-tooltip.top="'Edit Game'"
                       icon="pi pi-pencil"
+                      class="btn-secondary !p-2 !w-8 !h-8"
+                      v-tooltip.top="'Edit'"
                     />
                   </NuxtLink>
                   <Button
                     @click="showSingleDeleteConfirmation(data)"
-                    class="btn-danger !p-2 w-8 h-8"
-                    v-tooltip.top="'Delete Game'"
                     icon="pi pi-trash"
+                    class="btn-action-delete !p-2 !w-8 !h-8"
+                    v-tooltip.top="'Delete'"
                   />
                 </div>
               </template>

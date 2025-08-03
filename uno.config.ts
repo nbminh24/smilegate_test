@@ -23,8 +23,9 @@ export default defineConfig({
   shortcuts: {
     // Buttons: Refined padding and font weight for a more solid feel
     'btn-primary': 'bg-smilegate-blue hover:bg-smilegate-dark text-white px-5 py-2 rounded-xl transition-all duration-300 font-bold shadow-md hover:shadow-lg hover:transform hover:scale-105',
-    'btn-secondary': 'bg-white hover:bg-gray-100 text-gray-800 px-5 py-2 rounded-xl transition-all duration-300 font-bold border border-gray-300 shadow-md hover:shadow-lg hover:transform hover:scale-105',
+    'btn-secondary': 'bg-white hover:bg-gray-100 text-gray-800 px-5 py-2 rounded-xl transition-colors duration-200 border-none shadow-none outline-none',
     'btn-danger': 'bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-xl transition-all duration-300 font-bold shadow-md hover:shadow-lg hover:transform hover:scale-105',
+    'btn-action-delete': 'bg-white text-red-500 px-5 py-2 rounded-xl transition-all duration-200 border-none shadow-none outline-none hover:bg-red-600 hover:text-white',
 
     // Cards & Layout: Increased padding and refined shadows
     'card': 'bg-white rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300',

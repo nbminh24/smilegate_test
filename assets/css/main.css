@@ -337,6 +337,17 @@ main {
 }
 
 /* ==========================================================================
+   PrimeVue Component Overrides
+   ========================================================================== */
+
+/* Remove focus ring from all buttons to prevent double borders on custom-styled buttons */
+.p-button:focus,
+.p-button.p-focus {
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* ==========================================================================
    8. Responsive Design
    ========================================================================== */
 
