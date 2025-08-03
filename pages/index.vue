@@ -191,14 +191,18 @@
             <!-- Rows Per Page Dropdown -->
             <div class="flex items-center gap-2">
               <label for="rowsPerPage" class="text-sm text-gray-600">Rows:</label>
-              <Dropdown 
-                v-model="rowsPerPage" 
-                :options="[10, 20, 50, 100]" 
-                class="w-24"
-                :pt="{
-                  panel: { class: 'bg-white dark:bg-gray-800 shadow-lg rounded-lg border dark:border-gray-700' }
-                }"
-              />
+              <div class="flex items-center gap-2">
+                <Button
+                  v-for="option in [10, 20, 50, 100]"
+                  :key="option"
+                  @click="rowsPerPage = option"
+                  :label="String(option)"
+                  :class="[
+                    'paginator-button !min-w-10',
+                    { 'paginator-button-active': rowsPerPage === option }
+                  ]"
+                />
+              </div>
             </div>
 
             <!-- Pagination Controls -->
@@ -527,3 +531,5 @@ onMounted(() => {
   fetchGames()
 })
 </script>
+
+
