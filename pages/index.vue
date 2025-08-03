@@ -10,8 +10,8 @@
       <!-- Search Section Card -->
       <div class="card p-4">
         <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
-          <div class="flex-grow grid grid-cols-1 md:grid-cols-3 gap-x-4 bg-gray-100/80 dark:bg-gray-800/80 p-1 rounded-xl border-2 border-transparent transition-all duration-300 focus-within:border-smilegate-blue focus-within:bg-white">
-            <div class="relative md:col-span-2">
+          <div class="flex-grow flex items-center bg-gray-100/80 dark:bg-gray-800/80 p-1 rounded-xl border-2 border-transparent transition-all duration-300 focus-within:border-smilegate-blue focus-within:bg-white">
+            <div class="relative flex-grow">
               <i class="pi pi-search absolute top-1/2 -translate-y-1/2 left-4 text-gray-400"></i>
               <InputText
                 v-model="searchKeyword"
@@ -19,12 +19,13 @@
                 class="w-full !pl-11 bg-transparent border-none focus:ring-0 h-12 text-base"
               />
             </div>
-            <div class="relative md:col-span-1">
+            <div class="hidden md:block w-px self-stretch bg-gray-400 dark:bg-gray-500 mx-2"></div>
+            <div class="relative flex-shrink-0">
               <Button 
                 @click="toggleCategoryFilter"
                 :class="['w-full bg-transparent border-none focus:ring-0 h-12 text-left px-3 flex items-center justify-between text-base', selectedCategory ? 'text-gray-800' : 'text-gray-500']"
               >
-                <span>{{ selectedCategory ? selectedCategory : 'Category' }}</span>
+                <span class="mr-4">{{ selectedCategory ? selectedCategory : 'Category' }}</span>
                 <i class="pi pi-chevron-down text-gray-400"></i>
               </Button>
               <Button 
