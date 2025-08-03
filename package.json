@@ -23,8 +23,9 @@
         "typescript": "^5.2.0"
     },
     "dependencies": {
-        "primevue": "^4.0.0",
-        "primeicons": "^6.0.0"
+        "@primevue/nuxt-module": "^4.3.7",
+        "primeicons": "^6.0.0",
+        "primevue": "^4.0.0"
     },
     "packageManager": "bun@1.0.0"
 }

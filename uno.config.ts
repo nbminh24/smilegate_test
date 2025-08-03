@@ -21,16 +21,23 @@ export default defineConfig({
     },
   },
   shortcuts: {
-    'btn-primary': 'bg-smilegate-blue hover:bg-smilegate-dark text-white px-4 py-3 rounded-lg transition-all duration-200 font-medium shadow-sm hover:shadow-md',
-    'btn-secondary': 'bg-smilegate-light-gray hover:bg-gray-200 text-smilegate-dark-gray px-4 py-3 rounded-lg transition-all duration-200 font-medium border border-gray-300',
-    'btn-danger': 'bg-red-600 hover:bg-red-700 text-white px-4 py-3 rounded-lg transition-all duration-200 font-medium shadow-sm hover:shadow-md',
-    'btn-orange': 'bg-smilegate-orange hover:bg-orange-600 text-white px-4 py-3 rounded-lg transition-all duration-200 font-medium shadow-sm hover:shadow-md',
-    'card': 'bg-white rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300',
-    'card-header': 'bg-gradient-to-r from-smilegate-blue to-smilegate-dark text-white p-6 rounded-t-xl',
-    'input-field': 'w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-smilegate-blue focus:border-transparent transition-all duration-200',
-    'hero-banner': 'bg-gradient-to-br from-smilegate-blue via-smilegate-dark to-purple-900 text-white',
-    'table-row': 'hover:bg-smilegate-light-gray transition-colors duration-200 border-b border-gray-100',
-    'language-flag': 'w-6 h-6 rounded-full border-2 border-gray-200 shadow-sm',
+    // Buttons: Refined padding and font weight for a more solid feel
+    'btn-primary': 'bg-smilegate-blue hover:bg-smilegate-dark text-white px-5 py-2 rounded-xl transition-all duration-300 font-bold shadow-md hover:shadow-lg hover:transform hover:scale-105',
+    'btn-secondary': 'bg-white hover:bg-gray-100 text-gray-800 px-5 py-2 rounded-xl transition-all duration-300 font-bold border border-gray-300 shadow-md hover:shadow-lg hover:transform hover:scale-105',
+    'btn-danger': 'bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-xl transition-all duration-300 font-bold shadow-md hover:shadow-lg hover:transform hover:scale-105',
+
+    // Cards & Layout: Increased padding and refined shadows
+    'card': 'bg-white rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300',
+    'card-header': 'bg-gray-50/50 text-gray-900 p-5 font-bold border-b border-gray-200 rounded-t-2xl',
+    'input-field': 'w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-smilegate-blue focus:border-transparent transition-all duration-200 bg-white',
+
+    // Table: Improved spacing and row separation
+    'table-header': 'text-xs text-gray-500 uppercase tracking-wider font-bold',
+    'table-row': 'py-3 border-t border-gray-200 hover:bg-gray-50 transition-colors duration-200',
+    'table-cell': 'px-6 py-6 whitespace-nowrap',
+
+    // Misc
+    'language-flag': 'w-6 h-6 rounded-full border-2 border-white shadow-sm',
   },
   rules: [
     ['text-gradient', { 'background': 'linear-gradient(45deg, #0066CC, #004499)', '-webkit-background-clip': 'text', '-webkit-text-fill-color': 'transparent' }]

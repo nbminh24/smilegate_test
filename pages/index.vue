@@ -8,14 +8,14 @@
       </div>
 
       <!-- Search Section Card -->
-      <div class="search-section">
+      <div class="card p-6">
         <div class="flex flex-col md:flex-row gap-6 items-center justify-between">
           <div class="flex flex-col md:flex-row gap-6 flex-1">
             <div class="flex-1">
               <InputText 
                 v-model="searchKeyword" 
                 placeholder="Search games by ID, name, or category..." 
-                class="w-full"
+                class="input-field w-full"
               />
             </div>
             <Dropdown 
@@ -24,7 +24,7 @@
               optionLabel="label"
               optionValue="value"
               placeholder="Filter by Category" 
-              class="w-full md:w-64"
+              class="input-field w-full md:w-64"
               showClear
               :showClear="selectedCategory !== null"
             >
@@ -37,12 +37,12 @@
             </Dropdown>
           </div>
           <div class="flex gap-4">
-            <Button @click="refreshGames" outlined>
+            <Button @click="refreshGames" class="btn-secondary">
               <i class="pi pi-refresh mr-2"></i>
               Refresh
             </Button>
             <NuxtLink to="/register/new">
-              <Button>
+              <Button class="btn-primary">
                 <i class="pi pi-plus mr-2"></i>
                 New Game
               </Button>
@@ -52,7 +52,7 @@
       </div>
 
       <!-- Game Collection Card -->
-      <div class="game-collection">
+      <div class="card">
         <div class="card-header">
           <div class="flex items-center gap-3">
             <i class="pi pi-gamepad"></i>
@@ -65,8 +65,7 @@
             <Button 
               v-if="selectedGames.length > 0"
               @click="showDeleteConfirmation" 
-              severity="danger"
-              outlined
+              class="btn-danger"
             >
               <i class="pi pi-trash mr-2"></i>
               Delete Selected ({{ selectedGames.length }})
@@ -97,22 +96,36 @@
           <DataTable 
             v-else
             :value="filteredGames" 
+            :loading="loading" 
+            v-model:selection="selectedGames" 
+            dataKey="id"
             :paginator="true" 
             :rows="10"
-            :rows-per-page-options="[5, 10, 20, 50]"
-            paginator-template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-            current-page-report-template="Showing {first} to {last} of {totalRecords} games"
-            responsive-layout="scroll"
+            :rowsPerPageOptions="[5, 10, 20, 50]" 
+            paginatorPosition="bottom"
+            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} games"
             class="w-full"
-            striped-rows
-            v-model:selection="selectedGames"
-            dataKey="id"
+            :pt="{
+              root: { style: 'table-layout: fixed; width: 100%' },
+              paginator: { root: { class: 'p-4 bg-white border-t border-gray-200' } },
+
+              bodyrow: (options) => ({
+                class: [
+                  'table-row',
+                  'h-14',
+                  'bg-white'
+                ]
+              }),
+              cell: { class: 'table-cell' }
+            }"
+
           >
             <!-- Selection Column -->
             <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
             
             <!-- Game ID Column -->
-            <Column field="id" header="Game ID" :sortable="true" style="width: 180px">
+                        <Column field="id" header="Game ID" :sortable="true" style="width: 15%" headerClass="!text-left bg-gray-50 !py-4">
               <template #body="{ data }">
                 <span class="font-mono text-sm font-semibold text-gray-700">
                   <span v-html="highlightText(data.id, searchKeyword)"></span>
@@ -121,7 +134,7 @@
             </Column>
             
             <!-- Category Column -->
-            <Column field="category" header="Category" :sortable="true" style="width: 140px">
+                        <Column field="category" header="Category" :sortable="true" style="width: 15%" headerClass="!text-left bg-gray-50 !py-4">
               <template #body="{ data }">
                 <span class="category-badge">
                   <span v-html="highlightText(data.category, searchKeyword)"></span>
@@ -130,7 +143,7 @@
             </Column>
             
             <!-- English Name Column -->
-            <Column field="name.en" header="English Name" :sortable="true" style="width: 200px">
+                        <Column field="name.en" header="English Name" :sortable="true" style="width: 20%" headerClass="!text-left bg-gray-50 !py-4">
               <template #body="{ data }">
                 <div class="flex items-center gap-3">
                   <span class="language-flag en">EN</span>
@@ -142,7 +155,7 @@
             </Column>
             
             <!-- Korean Name Column -->
-            <Column field="name.ko" header="Korean Name" :sortable="true" style="width: 200px">
+                        <Column field="name.ko" header="Korean Name" :sortable="true" style="width: 20%" headerClass="!text-left bg-gray-50 !py-4">
               <template #body="{ data }">
                 <div class="flex items-center gap-3">
                   <span class="language-flag ko">KO</span>
@@ -154,7 +167,7 @@
             </Column>
             
             <!-- Japanese Name Column -->
-            <Column field="name.ja" header="Japanese Name" :sortable="true" style="width: 200px">
+                        <Column field="name.ja" header="Japanese Name" :sortable="true" style="width: 20%" headerClass="!text-left bg-gray-50 !py-4">
               <template #body="{ data }">
                 <div class="flex items-center gap-3">
                   <span class="language-flag ja">JA</span>
@@ -166,18 +179,21 @@
             </Column>
             
             <!-- Actions Column -->
-            <Column header="Actions" style="width: 100px" :frozen="true" alignFrozen="right">
+            <Column header="Actions" style="width: 10%" headerClass="!text-left bg-gray-50 !py-4" :frozen="true" alignFrozen="right">
               <template #body="{ data }">
-                <div class="action-btn">
-                  <NuxtLink :to="`/register/${data.id}`" v-tooltip.top="'Edit Game'">
-                    <Button class="action-btn edit" icon="pi pi-pencil" outlined />
+                <div class="flex gap-2">
+                  <NuxtLink :to="`/register/${data.id}`">
+                    <Button
+                      class="btn-secondary !p-2 w-8 h-8"
+                      v-tooltip.top="'Edit Game'"
+                      icon="pi pi-pencil"
+                    />
                   </NuxtLink>
-                  <Button 
-                    @click="showSingleDeleteConfirmation(data)" 
-                    class="action-btn delete"
+                  <Button
+                    @click="showSingleDeleteConfirmation(data)"
+                    class="btn-danger !p-2 w-8 h-8"
                     v-tooltip.top="'Delete Game'"
                     icon="pi pi-trash"
-                    outlined
                   />
                 </div>
               </template>
@@ -202,12 +218,12 @@
         </span>
       </div>
       <template #footer>
-        <Button label="No" icon="pi pi-times" @click="showBulkDeleteDialog = false" class="p-button-text" />
+        <Button label="Cancel" icon="pi pi-times" @click="showBulkDeleteDialog = false" class="btn-secondary" />
         <Button 
-          label="Yes, Delete" 
+          label="Yes, Delete All" 
           icon="pi pi-check" 
           @click="confirmBulkDelete" 
-          class="p-button-danger" 
+          class="btn-danger" 
           :loading="deleting"
         />
       </template>
@@ -227,12 +243,12 @@
         </span>
       </div>
       <template #footer>
-        <Button label="No" icon="pi pi-times" @click="showSingleDeleteDialog = false" class="p-button-text" />
+        <Button label="Cancel" icon="pi pi-times" @click="showSingleDeleteDialog = false" class="btn-secondary" />
         <Button 
           label="Yes, Delete" 
           icon="pi pi-check" 
           @click="confirmSingleDelete" 
-          class="p-button-danger" 
+          class="btn-danger" 
           :loading="deleting"
         />
       </template>
@@ -246,6 +262,9 @@
 const { $toast } = useNuxtApp()
 
 // Reactive data
+const tableStyles = {
+  root: { style: 'table-layout: fixed; width: 100%' }
+}
 const games = ref([])
 const loading = ref(true)
 const searchKeyword = ref('')

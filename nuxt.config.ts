@@ -5,8 +5,15 @@ export default defineNuxtConfig({
         compatibilityDate: '2025-08-02'
     },
     modules: [
-        '@unocss/nuxt'
+        '@unocss/nuxt',
+        '@primevue/nuxt-module'
     ],
+    primevue: {
+        options: {
+            unstyled: true
+        },
+        importPT: { from: '~/assets/presets/mypreset' }
+    },
     css: [
         'primeicons/primeicons.css',
         '~/assets/css/main.css'
