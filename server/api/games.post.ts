@@ -1,5 +1,4 @@
 import { addGame } from '~/server/utils/database'
-import type { Game } from '~/server/utils/database'
 
 export default defineEventHandler(async (event) => {
   try {
@@ -76,4 +75,4 @@ export default defineEventHandler(async (event) => {
       data: error instanceof Error ? error.message : 'Unknown error'
     })
   }
-}) 
+})

@@ -1,0 +1,3 @@
+# Ignore files that cause persistent parsing errors
+layouts/default.vue
+pages/register/index.vue

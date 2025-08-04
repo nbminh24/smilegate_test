@@ -10,16 +10,18 @@
         "generate": "nuxt generate",
         "preview": "nuxt preview",
         "postinstall": "nuxt prepare",
-        "lint": "eslint .",
-        "lint:fix": "eslint . --fix"
+        "lint": "eslint --ext .ts,.js,.vue .",
+        "lint:fix": "eslint --ext .ts,.js,.vue . --fix"
     },
     "devDependencies": {
         "@nuxt/devtools": "latest",
         "@nuxt/eslint-config": "^0.2.0",
         "@nuxtjs/eslint-config-typescript": "^12.1.0",
+        "@nuxtjs/eslint-module": "^4.1.0",
         "@types/node": "^20.8.0",
         "@unocss/nuxt": "^0.58.0",
         "eslint": "^8.57.1",
+        "eslint-import-resolver-typescript": "^4.4.4",
         "nuxt": "^3.8.0",
         "typescript": "^5.2.0"
     },

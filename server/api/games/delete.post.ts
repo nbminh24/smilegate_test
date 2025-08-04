@@ -25,4 +25,4 @@ export default defineEventHandler(async (event) => {
       data: error.message
     })
   }
-}) 
+})

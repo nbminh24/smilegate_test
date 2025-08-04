@@ -1,8 +1,8 @@
 <template>
   <div>
     <slot />
-    <Toast 
-      position="top-right" 
+    <Toast
+      position="top-right"
       group="br"
       :pt="{
         root: { class: 'opacity-95' },

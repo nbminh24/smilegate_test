@@ -1,6 +1,6 @@
 import { getGames } from '~/server/utils/database'
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (_event) => {
   try {
     const games = await getGames()
     return { games }
@@ -11,4 +11,4 @@ export default defineEventHandler(async (event) => {
       data: error.message
     })
   }
-}) 
+})

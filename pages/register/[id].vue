@@ -3,29 +3,35 @@
     <main class="container mx-auto px-4 py-8">
       <!-- Page Title Section -->
       <div class="page-title-section">
-        <h1 class="page-title">Edit Game</h1>
-        <p class="page-subtitle">Update game information and multilingual names</p>
+        <h1 class="page-title">
+          Edit Game
+        </h1>
+        <p class="page-subtitle">
+          Update game information and multilingual names
+        </p>
       </div>
 
       <!-- Breadcrumb -->
       <div class="flex items-center justify-center text-sm text-gray-600 mb-6">
         <NuxtLink to="/" class="text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300 transition-colors flex items-center">
-          <i class="pi pi-home mr-1"></i>
+          <i class="pi pi-home mr-1" />
           Game List
         </NuxtLink>
-        <i class="pi pi-chevron-right mx-2 text-xs text-gray-400"></i>
+        <i class="pi pi-chevron-right mx-2 text-xs text-gray-400" />
         <span class="text-gray-500 dark:text-gray-400">{{ gameData.id || 'Edit Game' }}</span>
       </div>
 
       <!-- Form Card -->
       <div class="max-w-4xl mx-auto card overflow-hidden">
         <div class="p-6 sm:p-8">
-          <form @submit.prevent="updateGame" class="space-y-0">
+          <form class="space-y-0" @submit.prevent="updateGame">
             <!-- Basic Information Header -->
             <div class="pb-4 border-b border-gray-200 dark:border-gray-700">
               <div class="flex items-center gap-3">
-                <i class="pi pi-info-circle text-lg text-gray-500 dark:text-gray-400"></i>
-                <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Basic Information</h2>
+                <i class="pi pi-info-circle text-lg text-gray-500 dark:text-gray-400" />
+                <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-200">
+                  Basic Information
+                </h2>
               </div>
             </div>
 
@@ -33,36 +39,38 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-0">
               <div class="form-group !mb-0">
                 <label class="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">Game ID</label>
-                <InputText 
-                  :model-value="gameData.id" 
+                <InputText
+                  :model-value="gameData.id"
                   class="input-text"
                   readonly
                   disabled
                 />
-                <p class="mt-2 text-xs text-gray-400 dark:text-gray-500">Game ID cannot be changed.</p>
+                <p class="mt-2 text-xs text-gray-400 dark:text-gray-500">
+                  Game ID cannot be changed.
+                </p>
               </div>
-              
+
               <div class="form-group !mb-0">
                 <label class="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">Category <span class="text-red-500">*</span></label>
                 <div class="relative">
-                  <Button 
-                    @click="toggleCategoryFilter"
+                  <Button
                     :class="['input-text text-left w-full flex justify-between items-center', { '!border-red-500': validationErrors.category }]"
+                    @click="toggleCategoryFilter"
                   >
                     <span :class="[gameData.category ? 'text-gray-800 dark:text-gray-200' : 'text-gray-500']">
                       {{ selectedCategoryLabel || 'Select category' }}
                     </span>
-                    <i class="pi pi-chevron-down text-gray-400"></i>
+                    <i class="pi pi-chevron-down text-gray-400" />
                   </Button>
                   <OverlayPanel ref="categoryOverlay" class="!p-0 !shadow-2xl !border-none !rounded-xl mt-2">
                     <div class="bg-white dark:bg-gray-800 rounded-xl p-2 max-h-60 overflow-y-auto">
                       <div class="grid grid-cols-3 gap-2">
-                        <Button 
-                          v-for="category in categoryOptions" 
-                          :key="category.value" 
+                        <Button
+                          v-for="category in categoryOptions"
+                          :key="category.value"
                           :label="category.label"
-                          @click="selectCategory(category.value)"
                           :class="['text-sm !font-normal !py-2 !border-none', gameData.category === category.value ? '!bg-smilegate-orange !text-white' : '!bg-gray-100 dark:!bg-gray-700 !text-gray-700 dark:!text-gray-200 hover:!bg-gray-200 dark:hover:!bg-gray-600']"
+                          @click="selectCategory(category.value)"
                         />
                       </div>
                     </div>
@@ -76,27 +84,29 @@
             <div class="pt-4 pb-4 border-b border-gray-200 dark:border-gray-700">
               <div class="flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                  <i class="pi pi-globe text-lg text-gray-500 dark:text-gray-400"></i>
-                  <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Game Names (Multilingual)</h2>
+                  <i class="pi pi-globe text-lg text-gray-500 dark:text-gray-400" />
+                  <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-200">
+                    Game Names (Multilingual)
+                  </h2>
                 </div>
-                <Button v-if="languagesToAdd.length > 0" @click="(e) => languageOverlay.toggle(e)" label="Add Language" class="btn-add-language" />
+                <Button v-if="languagesToAdd.length > 0" label="Add Language" class="btn-add-language" @click="(e) => languageOverlay.toggle(e)" />
               </div>
 
               <OverlayPanel ref="languageOverlay" class="language-overlay">
                 <div class="flex flex-col gap-2 p-2">
-                  <Button v-for="lang in languagesToAdd" :key="lang.code" @click="addLanguage(lang)" :label="lang.name" class="btn-overlay" />
+                  <Button v-for="lang in languagesToAdd" :key="lang.code" :label="lang.name" class="btn-overlay" @click="addLanguage(lang)" />
                 </div>
               </OverlayPanel>
             </div>
 
             <!-- Language Name Inputs -->
             <div class="space-y-2 pt-2">
-              <div v-for="(lang, index) in availableLanguages" :key="lang.code" class="relative bg-gray-50 dark:bg-gray-800/50 p-4 rounded-xl border border-gray-200 dark:border-gray-700/50">
-                <Button 
-                  v-if="gameData.defaultLanguage !== lang.code" 
-                  @click="removeLanguage(lang.code)" 
+              <div v-for="lang in availableLanguages" :key="lang.code" class="relative bg-gray-50 dark:bg-gray-800/50 p-4 rounded-xl border border-gray-200 dark:border-gray-700/50">
+                <Button
+                  v-if="gameData.defaultLanguage !== lang.code"
                   icon="pi pi-times"
                   class="absolute top-3 right-3 btn-icon-danger !w-6 !h-6"
+                  @click="removeLanguage(lang.code)"
                 />
                 <div class="flex items-end gap-4">
                   <!-- Left Side: Language Name and Input (Wider) -->
@@ -105,8 +115,8 @@
                       <span class="font-medium text-gray-700 dark:text-gray-200">{{ lang.name }} <span v-if="gameData.defaultLanguage === lang.code" class="text-red-500 ml-0.5">*</span></span>
                       <span v-if="gameData.defaultLanguage === lang.code" class="text-xs text-primary-600 dark:text-primary-400 font-medium">(Default)</span>
                     </div>
-                    <InputText 
-                      v-model="gameData.name[lang.code]" 
+                    <InputText
+                      v-model="gameData.name[lang.code]"
                       :placeholder="`${lang.name} game name`"
                       class="input-text w-full"
                       :class="{ 'p-invalid': validationErrors[`name_${lang.code}`] }"
@@ -118,7 +128,7 @@
                   <!-- Right Side: Controls (Single Row) -->
                   <div class="flex items-center gap-4 pb-5">
                     <div class="flex items-center">
-                      <RadioButton v-model="gameData.defaultLanguage" :inputId="`default_lang_${lang.code}`" name="defaultLanguage" :value="lang.code" />
+                      <RadioButton v-model="gameData.defaultLanguage" :input-id="`default_lang_${lang.code}`" name="defaultLanguage" :value="lang.code" />
                       <label :for="`default_lang_${lang.code}`" class="ml-2 text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">Set as Default</label>
                     </div>
                   </div>
@@ -146,9 +156,9 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { useRoute, navigateTo } from '#app'
 import { useToast } from 'primevue/usetoast'
 import { z } from 'zod'
+import { useRoute, navigateTo } from '#app'
 
 const $toast = useToast()
 const route = useRoute()
@@ -160,20 +170,20 @@ const gameSchema = z.object({
   name: z.object({
     en: z.string().min(1, 'English name is required.'),
     ko: z.string().optional(),
-    ja: z.string().optional(),
+    ja: z.string().optional()
   }),
   defaultLanguage: z.string(),
-  enabled: z.boolean(),
+  enabled: z.boolean()
 })
 
 const loading = ref(false)
 const allGames = ref([])
-const gameData = ref({ 
+const gameData = ref({
   id: '',
   category: '',
   name: { en: '', ko: '', ja: '' },
   defaultLanguage: 'en',
-  enabled: true,
+  enabled: true
 })
 
 const validationErrors = ref({})
@@ -181,7 +191,7 @@ const validationErrors = ref({})
 const allLanguages = ref([
   { name: 'English', code: 'en' },
   { name: 'Korean', code: 'ko' },
-  { name: 'Japanese', code: 'ja' },
+  { name: 'Japanese', code: 'ja' }
 ])
 
 const availableLanguages = ref([])
@@ -230,9 +240,9 @@ const selectedCategoryLabel = computed(() => {
 // Computed
 const isFormValid = computed(() => {
   const defaultLang = gameData.value.defaultLanguage
-  return !validationErrors.value.category && 
+  return !validationErrors.value.category &&
          !validationErrors.value[`name_${defaultLang}`] &&
-         gameData.value.category && 
+         gameData.value.category &&
          gameData.value.name[defaultLang]
 })
 
@@ -253,12 +263,12 @@ const validateField = (field) => {
 
   // Handle dynamic name fields
   if (field.startsWith('name_')) {
-      const langCode = field.split('_')[1];
-      if (gameData.value.name[langCode]) {
-          delete validationErrors.value[field];
-      } else if (langCode === 'en') {
-          validationErrors.value[field] = 'English name is required.';
-      }
+    const langCode = field.split('_')[1]
+    if (gameData.value.name[langCode]) {
+      delete validationErrors.value[field]
+    } else if (langCode === 'en') {
+      validationErrors.value[field] = 'English name is required.'
+    }
   }
 }
 
@@ -279,7 +289,6 @@ const fetchAllGames = async () => {
     const response = await $fetch('/api/games')
     allGames.value = response.games || []
   } catch (error) {
-    console.error('Failed to fetch games for duplicate check:', error)
     // Optional: show a non-critical warning
   }
 }
@@ -289,7 +298,7 @@ const fetchGame = async () => {
     loading.value = true
     const response = await $fetch(`/api/games/${route.params.id}`)
     gameData.value = { ...response }
-    
+
     const nameKeys = Object.keys(response.name || {})
     availableLanguages.value = allLanguages.value.filter(lang => nameKeys.includes(lang.code))
 
@@ -297,9 +306,7 @@ const fetchGame = async () => {
     if (availableLanguages.value.length === 0) {
       availableLanguages.value.push(allLanguages.value.find(l => l.code === 'en'))
     }
-
   } catch (error) {
-    console.error('Error fetching game:', error)
     $toast.add({ group: 'br', severity: 'error', summary: 'Error', detail: 'Failed to load game data.', life: 2000 })
   } finally {
     loading.value = false
@@ -324,7 +331,7 @@ const updateGame = async () => {
   const duplicateNameGame = allGames.value.find(game =>
     game.id !== currentId && // Exclude the current game from the check
     Object.values(game.name).some(name => name && name.toLowerCase() === defaultName)
-  );
+  )
 
   if (duplicateNameGame) {
     $toast.add({ group: 'br', severity: 'error', summary: 'Duplicate Error', detail: `A game with the name '${gameData.value.name[defaultLang]}' already exists.`, life: 3000 })
