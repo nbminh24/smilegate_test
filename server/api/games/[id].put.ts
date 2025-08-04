@@ -49,18 +49,18 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    const game: Game = {
+    const updatedGameData = {
       id: id,
       category: body.category,
       name: body.name,
       defaultLanguage: body.defaultLanguage
     }
 
-    updateGame(id, game)
+    updateGame(id, updatedGameData)
 
     return {
       message: 'Game updated successfully',
-      game
+      game: updatedGameData
     }
   } catch (error: any) {
     if (error instanceof Error && error.message.includes('not found')) {

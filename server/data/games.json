@@ -93,11 +93,12 @@
       "id": "GAME_011",
       "category": "Drama",
       "name": {
-        "en": "Penhouse Life",
+        "en": "Life at Rosemarine",
         "ko": "인생 이야기",
         "ja": "ライフストーリー"
       },
-      "defaultLanguage": "en"
+      "defaultLanguage": "en",
+      "updatedAt": "2025-08-04T08:23:02.021Z"
     },
     {
       "id": "GAME_012",

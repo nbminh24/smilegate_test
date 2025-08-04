@@ -64,8 +64,8 @@
         </div>
       </div>
 
-      <!-- Game Collection Card -->
-      <div class="card">
+      <!-- Game Collection Table -->
+      <div class="mt-12 bg-white rounded-xl shadow-sm">
         <div class="card-header">
           <div class="flex items-center gap-3">
             <i class="pi pi-gamepad"></i>
@@ -116,7 +116,10 @@
             <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
             
             <!-- Game ID Column -->
-            <Column field="id" header="Game ID" :sortable="true" style="width: 15%" headerClass="!text-left !pl-6 bg-gray-50 !py-4" bodyClass="!pl-6">
+            <Column field="id" :sortable="true" style="width: 15%" headerClass="!text-left !pl-6 bg-gray-50 !py-4" bodyClass="!pl-6">
+              <template #header>
+                <span class="mr-2">Game ID</span>
+              </template>
               <template #body="{ data }">
                 <span class="font-mono text-sm font-semibold text-gray-700">
                   <span v-html="highlightText(data.id, searchKeyword)"></span>
@@ -125,7 +128,10 @@
             </Column>
             
             <!-- Category Column -->
-            <Column field="category" header="Category" :sortable="true" style="width: 15%" headerClass="!text-left !pl-6 bg-gray-50 !py-4" bodyClass="!pl-6">
+            <Column field="category" :sortable="true" style="width: 15%" headerClass="!text-left !pl-6 bg-gray-50 !py-4" bodyClass="!pl-6">
+              <template #header>
+                <span class="mr-2">Category</span>
+              </template>
               <template #body="{ data }">
                 <span class="category-badge">
                   <span v-html="highlightText(data.category, searchKeyword)"></span>
@@ -134,7 +140,10 @@
             </Column>
             
             <!-- English Name Column -->
-            <Column field="name.en" header="English Name" :sortable="true" style="width: 20%" headerClass="!text-left !pl-6 bg-gray-50 !py-4" bodyClass="!pl-6">
+            <Column field="name.en" :sortable="true" style="width: 20%" headerClass="!text-left !pl-6 bg-gray-50 !py-4" bodyClass="!pl-6">
+              <template #header>
+                <span class="mr-2">English Name</span>
+              </template>
               <template #body="{ data }">
                 <div class="flex items-center gap-3">
                   <span class="language-flag en">EN</span>
@@ -146,7 +155,10 @@
             </Column>
             
             <!-- Korean Name Column -->
-            <Column field="name.ko" header="Korean Name" :sortable="true" style="width: 20%" headerClass="!text-left !pl-6 bg-gray-50 !py-4" bodyClass="!pl-6">
+            <Column field="name.ko" :sortable="true" style="width: 20%" headerClass="!text-left !pl-6 bg-gray-50 !py-4" bodyClass="!pl-6">
+              <template #header>
+                <span class="mr-2">Korean Name</span>
+              </template>
               <template #body="{ data }">
                 <div class="flex items-center gap-3">
                   <span class="language-flag ko">KO</span>
@@ -158,7 +170,10 @@
             </Column>
             
             <!-- Japanese Name Column -->
-            <Column field="name.ja" header="Japanese Name" :sortable="true" style="width: 20%" headerClass="!text-left !pl-6 bg-gray-50 !py-4" bodyClass="!pl-6">
+            <Column field="name.ja" :sortable="true" style="width: 20%" headerClass="!text-left !pl-6 bg-gray-50 !py-4" bodyClass="!pl-6">
+              <template #header>
+                <span class="mr-2">Japanese Name</span>
+              </template>
               <template #body="{ data }">
                 <div class="flex items-center gap-3">
                   <span class="language-flag ja">JA</span>

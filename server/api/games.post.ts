@@ -49,18 +49,18 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    const game: Game = {
+    const newGameData = {
       id: body.id,
       category: body.category,
       name: body.name,
       defaultLanguage: body.defaultLanguage
     }
 
-    addGame(game)
+    addGame(newGameData)
 
     return {
       message: 'Game created successfully',
-      game
+      game: newGameData
     }
   } catch (error: any) {
     if (error instanceof Error && error.message.includes('already exists')) {
