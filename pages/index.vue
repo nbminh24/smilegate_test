@@ -21,22 +21,22 @@
             </div>
             <div class="hidden md:block w-px self-stretch bg-gray-400 dark:bg-gray-500 mx-2"></div>
             <div class="relative flex-shrink-0">
-              <Button 
-                @click="toggleCategoryFilter"
-                :class="['w-full bg-transparent border-none focus:ring-0 h-12 text-left px-3 flex items-center justify-between text-base', selectedCategory ? 'text-gray-800' : 'text-gray-500']"
-              >
-                <span class="mr-4">{{ selectedCategory ? selectedCategory : 'Category' }}</span>
+              <div @click="toggleCategoryFilter" class="w-full bg-transparent border-none focus:ring-0 h-12 px-3 flex items-center justify-between text-base cursor-pointer">
+                <span v-if="!selectedCategory" class="text-gray-500">Category</span>
+                <div v-else class="flex items-center gap-2 bg-gray-100 text-gray-700 rounded-md px-2 py-1 text-sm font-medium">
+                  <span>{{ selectedCategory }}</span>
+                  <i @click.stop="clearCategoryFilter" class="i-carbon-close text-lg text-gray-500 hover:text-gray-800 cursor-pointer"></i>
+                </div>
                 <i class="pi pi-chevron-down text-gray-400"></i>
-              </Button>
-              <Button 
-                v-if="selectedCategory" 
-                icon="pi pi-times" 
-                class="absolute top-1/2 -translate-y-1/2 right-8 w-6 h-6 rounded-full !p-0 bg-gray-200 text-gray-600 hover:bg-gray-300 hover:text-gray-800"
-                @click.stop="clearCategoryFilter"
-              />
+              </div>
               <OverlayPanel ref="categoryOverlay" class="!p-0 !shadow-2xl !border-none !rounded-xl mt-2">
                 <div class="bg-white rounded-xl p-4">
                   <div class="grid grid-cols-3 gap-2">
+                    <Button 
+                      label="All Categories"
+                      @click="clearAndCloseCategoryFilter"
+                      :class="['text-sm !font-normal !py-2 !border-none', !selectedCategory ? '!bg-smilegate-blue !text-white' : '!bg-gray-100 !text-gray-700 hover:!bg-gray-200']"
+                    />
                     <Button 
                       v-for="category in categoryOptions" 
                       :key="category.value" 
@@ -370,7 +370,7 @@ const filteredGames = computed(() => {
   }
 
   if (selectedCategory.value) {
-    filtered = filtered.filter(game => game.category === selectedCategory.value)
+    filtered = filtered.filter(game => game.category.toLowerCase() === selectedCategory.value.toLowerCase())
   }
 
   return filtered
@@ -386,7 +386,12 @@ const selectCategory = (categoryValue) => {
 }
 
 const clearCategoryFilter = () => {
-  selectedCategory.value = null
+  selectedCategory.value = ''
+}
+
+const clearAndCloseCategoryFilter = () => {
+  clearCategoryFilter()
+  categoryOverlay.value.hide()
 }
 
 const paginatedGames = computed(() => {
