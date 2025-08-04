@@ -192,7 +192,7 @@
           </DataTable>
 
           <!-- Custom Paginator -->
-          <div v-if="totalPages > 1" class="flex items-center justify-between flex-wrap gap-4 mt-6 pt-4 border-t border-gray-200">
+          <div class="flex justify-between items-center mt-6">
             <!-- Rows Per Page Dropdown -->
             <div class="flex items-center gap-2">
               <label for="rowsPerPage" class="text-sm text-gray-600">Rows:</label>
@@ -210,8 +210,8 @@
               </div>
             </div>
 
-            <!-- Pagination Controls -->
-            <div class="flex items-center gap-2">
+            <!-- Pagination controls -->
+            <div v-if="totalPages > 1" class="flex items-center gap-2">
               <Button @click="goToPage(1)" :disabled="currentPage === 1" icon="pi pi-angle-double-left" class="paginator-button" />
               <Button @click="prevPage" :disabled="currentPage === 1" icon="pi pi-angle-left" class="paginator-button" />
               <div class="text-sm text-gray-600">
@@ -293,11 +293,13 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { useToast } from 'primevue/usetoast'
 
-const { $toast } = useNuxtApp()
+
 const categoryOverlay = ref()
 
 // Reactive data
+const toast = useToast()
 const games = ref([])
 const loading = ref(true)
 const searchKeyword = ref('')
@@ -411,11 +413,11 @@ const fetchGames = async () => {
     games.value = response.games || []
   } catch (error) {
     console.error('Error fetching games:', error)
-    $toast.add({
+    toast.add({ group: 'br',
       severity: 'error',
       summary: 'Error',
       detail: 'Failed to load games',
-      life: 3000
+      life: 2000
     })
   } finally {
     loading.value = false
@@ -424,7 +426,7 @@ const fetchGames = async () => {
 
 const refreshGames = () => {
   fetchGames()
-  $toast.add({
+  toast.add({ group: 'br',
     severity: 'success',
     summary: 'Success',
     detail: 'Game list refreshed',
@@ -442,71 +444,98 @@ const showSingleDeleteConfirmation = (game) => {
 }
 
 const confirmBulkDelete = async () => {
-  if (selectedGames.value.length === 0) return
+  if (selectedGames.value.length === 0) return;
 
+  // Determine if the page will be empty *before* deleting.
+  const itemsOnCurrentPage = paginatedGames.value.length;
+  const deletedItemsOnCurrentPage = selectedGames.value.filter(selectedGame => 
+    paginatedGames.value.some(paginatedGame => paginatedGame.id === selectedGame.id)
+  ).length;
+  const shouldDecrementPage = (itemsOnCurrentPage === deletedItemsOnCurrentPage) && (currentPage.value > 1);
+
+  deleting.value = true;
   try {
-    deleting.value = true
-    const gameIds = selectedGames.value.map(game => game.id)
+    const gameIds = selectedGames.value.map(game => game.id);
     
-    for (const gameId of gameIds) {
-      await $fetch(`/api/games/delete`, {
+    await Promise.all(gameIds.map(gameId => 
+      $fetch(`/api/games/delete`, {
         method: 'POST',
         body: { id: gameId }
       })
-    }
-    
-    selectedGames.value = []
-    showBulkDeleteDialog.value = false
-    await fetchGames()
-    $toast.add({
+    ));
+
+    toast.add({ 
+      group: 'br',
       severity: 'success',
       summary: 'Success',
-      detail: `${gameIds.length} games deleted successfully`,
-      life: 3000
-    })
+      detail: `${gameIds.length} game(s) deleted successfully`,
+      life: 2000
+    });
+
+    await fetchGames();
+    selectedGames.value = [];
+
+    if (shouldDecrementPage) {
+      currentPage.value--;
+    }
+
   } catch (error) {
-    console.error('Error deleting selected games:', error)
-    $toast.add({
+    console.error('Error deleting selected games:', error);
+    toast.add({ 
+      group: 'br',
       severity: 'error',
       summary: 'Error',
-      detail: 'Failed to delete selected games',
+      detail: 'Failed to delete games. Please try again.',
       life: 3000
-    })
+    });
   } finally {
-    deleting.value = false
+    deleting.value = false;
+    showBulkDeleteDialog.value = false; // Always close the dialog
   }
 }
 
 const confirmSingleDelete = async () => {
-  if (!gameToDelete.value) return
+  if (!gameToDelete.value) return;
 
+  // Determine if this is the last item on the page *before* deleting.
+  const isDeletingLastItemOnPage = paginatedGames.value.length === 1 && currentPage.value > 1;
+
+  deleting.value = true;
   try {
-    deleting.value = true
+    const deletedGameId = gameToDelete.value.id;
     
     await $fetch(`/api/games/delete`, {
       method: 'POST',
       body: { id: gameToDelete.value.id }
-    })
+    });
     
-    showSingleDeleteDialog.value = false
-    gameToDelete.value = null
-    await fetchGames()
-    $toast.add({
+    toast.add({ 
+      group: 'br',
       severity: 'success',
       summary: 'Success',
-      detail: 'Game deleted successfully',
-      life: 3000
-    })
+      detail: `Game '${deletedGameId}' deleted successfully`,
+      life: 2000
+    });
+
+    await fetchGames();
+
+    if (isDeletingLastItemOnPage) {
+      currentPage.value--;
+    }
+
   } catch (error) {
-    console.error('Error deleting game:', error)
-    $toast.add({
+    console.error('Error deleting game:', error);
+    toast.add({ 
+      group: 'br',
       severity: 'error',
       summary: 'Error',
-      detail: 'Failed to delete game',
+      detail: 'Failed to delete game. Please try again.',
       life: 3000
-    })
+    });
   } finally {
-    deleting.value = false
+    deleting.value = false;
+    gameToDelete.value = null;
+    showSingleDeleteDialog.value = false; // Always close the dialog
   }
 }
 

@@ -166,7 +166,8 @@ const gameSchema = z.object({
   enabled: z.boolean(),
 })
 
-const loading = ref(true)
+const loading = ref(false)
+const allGames = ref([])
 const gameData = ref({ 
   id: '',
   category: '',
@@ -228,9 +229,11 @@ const selectedCategoryLabel = computed(() => {
 
 // Computed
 const isFormValid = computed(() => {
-  return Object.keys(validationErrors.value).every(key => !validationErrors.value[key]) &&
-         gameData.value.category &&
-         gameData.value.name.en
+  const defaultLang = gameData.value.defaultLanguage
+  return !validationErrors.value.category && 
+         !validationErrors.value[`name_${defaultLang}`] &&
+         gameData.value.category && 
+         gameData.value.name[defaultLang]
 })
 
 // Methods
@@ -271,6 +274,16 @@ const removeLanguage = (langCode) => {
   }
 }
 
+const fetchAllGames = async () => {
+  try {
+    const response = await $fetch('/api/games')
+    allGames.value = response.games || []
+  } catch (error) {
+    console.error('Failed to fetch games for duplicate check:', error)
+    // Optional: show a non-critical warning
+  }
+}
+
 const fetchGame = async () => {
   try {
     loading.value = true
@@ -287,35 +300,53 @@ const fetchGame = async () => {
 
   } catch (error) {
     console.error('Error fetching game:', error)
-    $toast.add({ severity: 'error', summary: 'Error', detail: 'Failed to load game data.', life: 3000 })
+    $toast.add({ group: 'br', severity: 'error', summary: 'Error', detail: 'Failed to load game data.', life: 2000 })
   } finally {
     loading.value = false
   }
 }
 
 const updateGame = async () => {
-  const result = gameSchema.safeParse(gameData.value)
-  if (!result.success) {
-    const errors = {}
-    result.error.errors.forEach(err => {
-      errors[err.path[0]] = err.message
-    })
-    validationErrors.value = errors
-    $toast.add({ severity: 'error', summary: 'Validation Error', detail: 'Please fix the errors.', life: 3000 })
+  // Manually validate all required fields before submitting
+  validateField('category')
+  validateField(`name_${gameData.value.defaultLanguage}`)
+
+  if (!isFormValid.value) {
+    $toast.add({ group: 'br', severity: 'error', summary: 'Validation Error', detail: 'Please fix the errors before submitting.', life: 2000 })
+    return
+  }
+
+  // Check for duplicate name
+  const defaultLang = gameData.value.defaultLanguage
+  const defaultName = gameData.value.name[defaultLang]?.trim().toLowerCase()
+  const currentId = route.params.id
+
+  const duplicateNameGame = allGames.value.find(game =>
+    game.id !== currentId && // Exclude the current game from the check
+    Object.values(game.name).some(name => name && name.toLowerCase() === defaultName)
+  );
+
+  if (duplicateNameGame) {
+    $toast.add({ group: 'br', severity: 'error', summary: 'Duplicate Error', detail: `A game with the name '${gameData.value.name[defaultLang]}' already exists.`, life: 3000 })
     return
   }
 
   loading.value = true
   try {
-    await $fetch(`/api/games/${route.params.id}`, { method: 'PUT', body: result.data })
-    $toast.add({ severity: 'success', summary: 'Success', detail: 'Game updated successfully!', life: 3000 })
+    await $fetch(`/api/games/${route.params.id}`, { method: 'PUT', body: gameData.value })
+    $toast.add({ group: 'br', severity: 'success', summary: 'Success', detail: 'Game updated successfully!', life: 2000 })
     await navigateTo('/')
   } catch (error) {
-    $toast.add({ severity: 'error', summary: 'Error', detail: 'Failed to update game.', life: 3000 })
+    $toast.add({ group: 'br', severity: 'error', summary: 'Error', detail: 'Failed to update game.', life: 2000 })
   } finally {
     loading.value = false
   }
 }
 
-onMounted(fetchGame)
+onMounted(() => {
+  Promise.all([
+    fetchGame(),
+    fetchAllGames()
+  ])
+})
 </script>

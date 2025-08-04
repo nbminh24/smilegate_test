@@ -4,17 +4,16 @@
       "id": "GAME_002",
       "category": "Adventure",
       "name": {
-        "en": "Lost Kingdom",
-        "ko": "잃어버린 왕국",
-        "ja": "失われた王国"
+        "en": "Lost Kingdom Revolution",
+        "ko": "잃어버린 왕국"
       },
       "defaultLanguage": "en"
     },
     {
       "id": "GAME_003",
-      "category": "RPG",
+      "category": "Adventure",
       "name": {
-        "en": "Dragon Quest",
+        "en": "Dragon Treasure",
         "ko": "드래곤 퀘스트",
         "ja": "ドラゴンクエスト"
       },
@@ -34,7 +33,7 @@
       "id": "GAME_005",
       "category": "Sports",
       "name": {
-        "en": "Soccer Pro",
+        "en": "Be The Champion",
         "ko": "축구 프로",
         "ja": "サッカープロ"
       },
@@ -44,7 +43,7 @@
       "id": "GAME_006",
       "category": "Racing",
       "name": {
-        "en": "Speed Racer",
+        "en": "Speedest Racer",
         "ko": "스피드 레이서",
         "ja": "スピードレーサー"
       },
@@ -64,7 +63,7 @@
       "id": "GAME_008",
       "category": "Simulation",
       "name": {
-        "en": "City Manager",
+        "en": "Manager Is So Fun",
         "ko": "시티 매니저",
         "ja": "シティマネージャー"
       },
@@ -84,7 +83,7 @@
       "id": "GAME_010",
       "category": "Comedy",
       "name": {
-        "en": "Funny Farm",
+        "en": "FiFarm",
         "ko": "재미있는 농장",
         "ja": "ファニーファーム"
       },
@@ -94,7 +93,7 @@
       "id": "GAME_011",
       "category": "Drama",
       "name": {
-        "en": "Life Stories",
+        "en": "Penhouse Life",
         "ko": "인생 이야기",
         "ja": "ライフストーリー"
       },
@@ -124,7 +123,7 @@
       "id": "GAME_014",
       "category": "Historical",
       "name": {
-        "en": "Ancient Times",
+        "en": "Medieval Power",
         "ko": "고대 시대",
         "ja": "古代時代"
       },
@@ -254,7 +253,7 @@
       "id": "GAME_028",
       "category": "Sci-Fi",
       "name": {
-        "en": "Robot Wars",
+        "en": "Robot Warriors",
         "ko": "로봇 전쟁",
         "ja": "ロボットウォーズ"
       },
@@ -265,7 +264,7 @@
       "category": "Historical",
       "name": {
         "en": "Medieval Times",
-        "ko": "중세 시대",
+        "ko": "중세 시",
         "ja": "中世時代"
       },
       "defaultLanguage": "en"
@@ -274,7 +273,7 @@
       "id": "GAME_030",
       "category": "Educational",
       "name": {
-        "en": "Science Lab",
+        "en": "Science Advanture Lab",
         "ko": "과학 실험실",
         "ja": "サイエンスラボ"
       },

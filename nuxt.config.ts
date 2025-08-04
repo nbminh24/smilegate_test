@@ -12,7 +12,10 @@ export default defineNuxtConfig({
         options: {
             unstyled: true
         },
-        importPT: { from: '~/assets/presets/mypreset' }
+                importPT: { from: '~/assets/presets/mypreset' },
+        components: {
+            include: ['Toast']
+        }
     },
     css: [
         'primeicons/primeicons.css',
