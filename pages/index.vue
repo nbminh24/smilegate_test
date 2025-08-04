@@ -31,7 +31,7 @@
               <Button 
                 v-if="selectedCategory" 
                 icon="pi pi-times" 
-                class="absolute top-1/2 -translate-y-1/2 right-10 w-6 h-6 rounded-full !p-0 bg-gray-200 text-gray-600 hover:bg-gray-300 hover:text-gray-800"
+                class="absolute top-1/2 -translate-y-1/2 right-8 w-6 h-6 rounded-full !p-0 bg-gray-200 text-gray-600 hover:bg-gray-300 hover:text-gray-800"
                 @click.stop="clearCategoryFilter"
               />
               <OverlayPanel ref="categoryOverlay" class="!p-0 !shadow-2xl !border-none !rounded-xl mt-2">
@@ -97,12 +97,7 @@
             <i class="pi pi-inbox"></i>
             <h3>No games found</h3>
             <p>Try adjusting your search criteria or add a new game to get started.</p>
-            <NuxtLink to="/register/new">
-              <Button>
-                <i class="pi pi-plus mr-2"></i>
-                Add First Game
-              </Button>
-            </NuxtLink>
+
           </div>
           
           <!-- Data Table -->
@@ -239,51 +234,57 @@
     <Dialog 
       v-model:visible="showBulkDeleteDialog" 
       modal 
-      header="Confirm Bulk Delete" 
       :style="{ width: '450px' }"
       :closable="false"
+      :pt="{ 
+        root: { class: '!rounded-2xl !shadow-2xl !border-none' },
+        header: { class: 'hidden' },
+        content: { class: '!p-0' },
+      }"
     >
-      <div class="confirmation-content">
-        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem; color: #fbbf24;" />
-        <span>
-          Are you sure you want to delete <strong>{{ selectedGames.length }}</strong> selected game{{ selectedGames.length > 1 ? 's' : '' }}?
-        </span>
+      <div class="p-6 bg-white dark:bg-gray-800 rounded-2xl flex flex-col gap-6">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 rounded-full bg-amber-100 dark:bg-amber-900/50 flex items-center justify-center">
+            <i class="pi pi-exclamation-triangle text-2xl text-amber-500"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-lg text-gray-800 dark:text-gray-100">Confirm Bulk Deletion</h3>
+            <p class="text-gray-600 dark:text-gray-300">Are you sure you want to delete {{ selectedGames.length }} selected game(s)?</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 justify-end">
+          <Button label="Cancel" class="btn-secondary" @click="showBulkDeleteDialog = false" />
+          <Button label="Yes, Delete All" icon="pi pi-trash" class="btn-danger flex items-center gap-2" @click="confirmBulkDelete" :loading="deleting" />
+        </div>
       </div>
-      <template #footer>
-        <Button label="Cancel" icon="pi pi-times" @click="showBulkDeleteDialog = false" class="btn-secondary" />
-        <Button 
-          label="Yes, Delete All" 
-          icon="pi pi-check" 
-          @click="confirmBulkDelete" 
-          class="btn-danger" 
-          :loading="deleting"
-        />
-      </template>
     </Dialog>
 
     <Dialog 
       v-model:visible="showSingleDeleteDialog" 
       modal 
-      header="Confirm Delete" 
       :style="{ width: '450px' }"
       :closable="false"
+      :pt="{ 
+        root: { class: '!rounded-2xl !shadow-2xl !border-none' },
+        header: { class: 'hidden' },
+        content: { class: '!p-0' },
+      }"
     >
-      <div class="confirmation-content">
-        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem; color: #fbbf24;" />
-        <span>
-          Are you sure you want to delete game <strong>{{ gameToDelete?.id }}</strong>?
-        </span>
+      <div v-if="gameToDelete" class="p-6 bg-white dark:bg-gray-800 rounded-2xl flex flex-col gap-6">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 rounded-full bg-amber-100 dark:bg-amber-900/50 flex items-center justify-center">
+            <i class="pi pi-exclamation-triangle text-2xl text-amber-500"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-lg text-gray-800 dark:text-gray-100">Confirm Deletion</h3>
+            <p class="text-gray-600 dark:text-gray-300">Are you sure you want to delete <strong>{{ gameToDelete.name.en || gameToDelete.id }}</strong>?</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 justify-end">
+          <Button label="Cancel" class="btn-secondary" @click="showSingleDeleteDialog = false" />
+          <Button label="Yes, Delete" icon="pi pi-trash" class="btn-danger flex items-center gap-2" @click="confirmSingleDelete" :loading="deleting" />
+        </div>
       </div>
-      <template #footer>
-        <Button label="Cancel" icon="pi pi-times" @click="showSingleDeleteDialog = false" class="btn-secondary" />
-        <Button 
-          label="Yes, Delete" 
-          icon="pi pi-check" 
-          @click="confirmSingleDelete" 
-          class="btn-danger" 
-          :loading="deleting"
-        />
-      </template>
     </Dialog>
 
 
@@ -514,3 +515,31 @@ onMounted(() => {
   fetchGames()
 })
 </script>
+
+<style scoped>
+:deep(.p-checkbox-box.p-highlight .p-checkbox-icon) {
+  display: none;
+}
+
+.p-datatable .p-column-header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.category-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25em 0.6em;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 1px solid currentColor;
+}
+
+.search-highlight {
+  background-color: #ffecb3; /* Or any highlight color you prefer */
+  font-weight: bold;
+}
+</style>
