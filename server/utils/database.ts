@@ -19,8 +19,12 @@ export function getGames(): Game[] {
         const data = readFileSync(DB_PATH, 'utf-8');
         const json = JSON.parse(data);
         const games: Game[] = json.games || [];
-        // Sort games by updatedAt in descending order
-        return games.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
+        // Sort games by updatedAt in descending order, handling missing timestamps
+        return games.sort((a, b) => {
+          const dateA = a.updatedAt ? new Date(a.updatedAt).getTime() : 0;
+          const dateB = b.updatedAt ? new Date(b.updatedAt).getTime() : 0;
+          return dateB - dateA;
+        });
     } catch (error) {
         console.error('Error reading games:', error);
         return [];

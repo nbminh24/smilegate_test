@@ -1,6 +1,17 @@
 {
   "games": [
     {
+      "id": "GAME_011",
+      "category": "Drama",
+      "name": {
+        "en": "Life at Rosemarine",
+        "ko": "인생 이야기",
+        "ja": "ライフストーリー"
+      },
+      "defaultLanguage": "en",
+      "updatedAt": "2025-08-04T08:23:02.021Z"
+    },
+    {
       "id": "GAME_002",
       "category": "Adventure",
       "name": {
@@ -88,17 +99,6 @@
         "ja": "ファニーファーム"
       },
       "defaultLanguage": "en"
-    },
-    {
-      "id": "GAME_011",
-      "category": "Drama",
-      "name": {
-        "en": "Life at Rosemarine",
-        "ko": "인생 이야기",
-        "ja": "ライフストーリー"
-      },
-      "defaultLanguage": "en",
-      "updatedAt": "2025-08-04T08:23:02.021Z"
     },
     {
       "id": "GAME_012",
@@ -274,11 +274,12 @@
       "id": "GAME_030",
       "category": "Educational",
       "name": {
-        "en": "Science Advanture Lab",
+        "en": "Science Laboratory",
         "ko": "과학 실험실",
         "ja": "サイエンスラボ"
       },
-      "defaultLanguage": "en"
+      "defaultLanguage": "en",
+      "updatedAt": "2025-08-04T08:26:05.584Z"
     }
   ]
 }
