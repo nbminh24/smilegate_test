@@ -2,15 +2,15 @@
   "version": 2,
   "builds": [
     {
-      "src": "package.json",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "package.json",
+      "src": "vercel-build.sh",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": ".output/public"
+        "distDir": ".output"
       }
+    },
+    {
+      "src": "server/api/**/*.ts",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
@@ -22,5 +22,11 @@
       "src": "/(.*)",
       "dest": "/"
     }
-  ]
+  ],
+  "env": {
+    "NODE_VERSION": "20",
+    "BUN_INSTALL": "1"
+  },
+  "buildCommand": "bun run vercel-build.sh",
+  "outputDirectory": ".output"
 }
