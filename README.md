@@ -5,7 +5,6 @@
 
 Đây là một ứng dụng web hiện đại dùng để quản lý cơ sở dữ liệu game. Giao diện được thiết kế sạch sẽ, trực quan và đầy đủ các tính năng CRUD (Tạo, Đọc, Cập nhật, Xóa).
 
-**Dự án này được phát triển như một phần của bài kiểm tra đầu vào cho vị trí Thực tập sinh Kỹ sư Frontend tại Smilegate Vietnam.** Nó thể hiện năng lực xây dựng các ứng dụng có khả năng phản hồi nhanh, giàu tính năng và hiệu suất cao bằng cách sử dụng một stack công nghệ hiện đại.
 
 ## 2. Các tính năng chính
 
