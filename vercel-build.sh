@@ -10,7 +10,8 @@ fi
 
 # Install dependencies using Bun
 echo "Installing dependencies..."
-bun install --frozen-lockfile --no-save
+# First install without --frozen-lockfile to ensure lockfile is up to date
+bun install --no-save
 
 # Build the application
 echo "Building application..."
