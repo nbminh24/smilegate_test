@@ -26,6 +26,7 @@
         "typescript": "^5.2.0"
     },
     "dependencies": {
+        "@nuxt/kit": "^3.8.0",
         "@primevue/nuxt-module": "^4.3.7",
         "@supabase/supabase-js": "^2.53.0",
         "primeicons": "^6.0.0",
