@@ -156,8 +156,8 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useToast } from 'primevue/usetoast'
-import { useFetch, navigateTo } from '#imports'
 import RadioButton from 'primevue/radiobutton'
+import { useFetch, navigateTo } from '#imports'
 
 const toast = useToast()
 
@@ -250,7 +250,7 @@ const isFormValid = computed(() => {
 // Methods
 const validateField = (field) => {
   validationErrors.value[field] = ''
-  
+
   if (field === 'id') {
     if (!gameData.value.id) {
       validationErrors.value[field] = 'Game ID is required'
@@ -280,21 +280,21 @@ const fetchAllGames = async () => {
     const { data } = await useFetch('/api/games')
     allGames.value = data.value?.games || []
   } catch (error) {
-    toast.add({ 
-      severity: 'warn', 
-      summary: 'Warning', 
-      detail: 'Could not verify duplicate games.', 
-      life: 3000 
+    toast.add({
+      severity: 'warn',
+      summary: 'Warning',
+      detail: 'Could not verify duplicate games.',
+      life: 3000
     })
   }
 }
 
 const createGame = async () => {
   // Validate all fields
-  Object.keys(gameData.value).forEach(field => {
+  Object.keys(gameData.value).forEach((field) => {
     if (field === 'name') {
       // Validate all name fields
-      Object.keys(gameData.value.name).forEach(lang => {
+      Object.keys(gameData.value.name).forEach((lang) => {
         if (lang === gameData.value.defaultLanguage) {
           validateField(`name_${lang}`)
         }
@@ -307,9 +307,9 @@ const createGame = async () => {
   // Check if any validation errors exist
   const hasErrors = Object.values(validationErrors.value).some(Boolean)
   if (hasErrors) {
-    toast.add({ 
-      severity: 'warn', 
-      summary: 'Validation Error', 
+    toast.add({
+      severity: 'warn',
+      summary: 'Validation Error',
       detail: 'Please fill in all required fields correctly',
       group: 'br',
       life: 2000
@@ -319,7 +319,7 @@ const createGame = async () => {
 
   try {
     loading.value = true
-    
+
     // Prepare the game data
     const gameDataToSend = {
       id: gameData.value.id,
@@ -336,7 +336,7 @@ const createGame = async () => {
     })
 
     // Send the request
-    const { data, error } = await useFetch('/api/games', {
+    const { error } = await useFetch('/api/games', {
       method: 'POST',
       body: gameDataToSend
     })
@@ -346,18 +346,18 @@ const createGame = async () => {
     }
 
     // Show success message
-    toast.add({ 
+    toast.add({
       severity: 'success',
       summary: 'Success',
       detail: 'Game created successfully',
       group: 'br',
       life: 2000
     })
-    
+
     // Keep the category but reset other fields for the next entry
     const currentCategory = gameData.value.category
     resetForm()
-    
+
     // Restore the category for the next entry
     if (currentCategory) {
       gameData.value.category = currentCategory
@@ -368,8 +368,8 @@ const createGame = async () => {
       }
     }
   } catch (error) {
-    console.error('Error creating game:', error)
-    toast.add({ 
+
+    toast.add({
       severity: 'error',
       summary: 'Error',
       detail: error.data?.message || 'Failed to create game. Please try again.',

@@ -94,12 +94,12 @@
 
               <OverlayPanel ref="languageOverlay" class="language-overlay">
                 <div class="flex flex-col gap-2 p-2">
-                  <Button 
-                    v-for="lang in languagesToAdd" 
-                    :key="lang.code" 
-                    :label="lang.name" 
-                    class="btn-overlay !border-0 !shadow-none !bg-transparent hover:!bg-gray-100 dark:hover:!bg-gray-700" 
-                    @click="addLanguage(lang)" 
+                  <Button
+                    v-for="lang in languagesToAdd"
+                    :key="lang.code"
+                    :label="lang.name"
+                    class="btn-overlay !border-0 !shadow-none !bg-transparent hover:!bg-gray-100 dark:hover:!bg-gray-700"
+                    @click="addLanguage(lang)"
                   />
                 </div>
               </OverlayPanel>
@@ -133,7 +133,7 @@
 
                   <!-- Right Side: Controls (Single Row) -->
                   <div class="flex items-center gap-4 pb-5">
-                    <div 
+                    <div
                       v-if="gameData.defaultLanguage !== lang.code"
                       class="flex items-center cursor-pointer"
                       @click="gameData.defaultLanguage = lang.code"
@@ -311,7 +311,7 @@ const fetchGame = async () => {
   try {
     loading.value = true
     const response = await $fetch(`/api/games/${route.params.id}`)
-    
+
     // Map backend fields to frontend field names
     gameData.value = {
       ...response,
@@ -346,7 +346,7 @@ const updateGame = async () => {
     }
 
     loading.value = true
-    
+
     // Prepare the data to send to the API
     const updateData = {
       ...gameData.value,
@@ -354,29 +354,29 @@ const updateGame = async () => {
       game_id: gameData.value.id // Make sure game_id is included
     }
 
-    const response = await $fetch(`/api/games/${route.params.id}`, { 
-      method: 'PUT', 
-      body: updateData 
+    const response = await $fetch(`/api/games/${route.params.id}`, {
+      method: 'PUT',
+      body: updateData
     })
-    
+
     if (response) {
-      $toast.add({ 
-        group: 'br', 
-        severity: 'success', 
-        summary: 'Success', 
-        detail: 'Game updated successfully!', 
-        life: 2000 
+      $toast.add({
+        group: 'br',
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Game updated successfully!',
+        life: 2000
       })
       await navigateTo('/')
     }
   } catch (error) {
-    console.error('Update error:', error)
-    $toast.add({ 
-      group: 'br', 
-      severity: 'error', 
-      summary: 'Error', 
-      detail: error.data?.message || 'Failed to update game. Please try again.', 
-      life: 3000 
+
+    $toast.add({
+      group: 'br',
+      severity: 'error',
+      summary: 'Error',
+      detail: error.data?.message || 'Failed to update game. Please try again.',
+      life: 3000
     })
   } finally {
     loading.value = false

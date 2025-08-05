@@ -577,10 +577,10 @@ watch([searchKeyword, selectedCategory], () => {
 })
 
 // Watch for rowsPerPage changes to adjust current page if needed
-watch(rowsPerPage, (newRowsPerPage, oldRowsPerPage) => {
+watch(rowsPerPage, (newRowsPerPage, _oldRowsPerPage) => {
   const totalItems = filteredGames.value.length
   const maxPage = Math.ceil(totalItems / newRowsPerPage)
-  
+
   // If current page would be empty after the change, go to the last valid page
   if (currentPage.value > maxPage) {
     currentPage.value = maxPage || 1 // Ensure at least page 1

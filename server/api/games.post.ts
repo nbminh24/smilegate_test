@@ -1,5 +1,5 @@
-import { addGame } from '~/server/utils/database'
 import { defineEventHandler, createError, readBody } from 'h3'
+import { addGame } from '~/server/utils/database'
 
 export default defineEventHandler(async (event) => {
   try {

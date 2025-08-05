@@ -1,5 +1,5 @@
-import { findGameById } from '~/server/utils/database'
 import { defineEventHandler, createError, getRouterParam } from 'h3'
+import { findGameById } from '~/server/utils/database'
 
 export default defineEventHandler(async (event) => {
   try {

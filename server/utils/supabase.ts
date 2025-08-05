@@ -13,7 +13,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 export const testConnection = async () => {
   try {
     const { data, error } = await supabase.from('games').select('*').limit(1)
-    if (error) throw error
+    if (error) { throw error }
     console.log('✅ Kết nối Supabase thành công!')
     return true
   } catch (error) {

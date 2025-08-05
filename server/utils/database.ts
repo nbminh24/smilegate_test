@@ -9,15 +9,15 @@ export interface Game {
   updated_at?: string
 }
 
-export async function getGames(): Promise<Game[]> {
+export async function getGames (): Promise<Game[]> {
   try {
     const { data, error } = await supabase
       .from('games')
       .select('*')
       .order('updated_at', { ascending: false })
 
-    if (error) throw error
-    
+    if (error) { throw error }
+
     // Map game_id to id for frontend compatibility
     return (data || []).map(game => ({
       ...game,
@@ -29,7 +29,7 @@ export async function getGames(): Promise<Game[]> {
   }
 }
 
-export async function findGameById(gameId: string): Promise<Game | null> {
+export async function findGameById (gameId: string): Promise<Game | null> {
   try {
     const { data, error } = await supabase
       .from('games')
@@ -37,8 +37,8 @@ export async function findGameById(gameId: string): Promise<Game | null> {
       .eq('game_id', gameId)
       .single()
 
-    if (error) throw error
-    
+    if (error) { throw error }
+
     // Add id field for frontend compatibility
     return data ? { ...data, id: data.game_id } : null
   } catch (error) {
@@ -47,7 +47,7 @@ export async function findGameById(gameId: string): Promise<Game | null> {
   }
 }
 
-export async function addGame(game: Omit<Game, 'created_at' | 'updated_at'>): Promise<Game> {
+export async function addGame (game: Omit<Game, 'created_at' | 'updated_at'>): Promise<Game> {
   try {
     const newGame = {
       ...game,
@@ -61,7 +61,7 @@ export async function addGame(game: Omit<Game, 'created_at' | 'updated_at'>): Pr
       .select()
       .single()
 
-    if (error) throw error
+    if (error) { throw error }
     return data
   } catch (error) {
     console.error('Error adding game:', error)
@@ -69,8 +69,8 @@ export async function addGame(game: Omit<Game, 'created_at' | 'updated_at'>): Pr
   }
 }
 
-export async function updateGame(
-  gameId: string, 
+export async function updateGame (
+  gameId: string,
   gameData: Partial<Omit<Game, 'created_at' | 'updated_at'>>
 ): Promise<Game | null> {
   try {
@@ -84,7 +84,7 @@ export async function updateGame(
       .select()
       .single()
 
-    if (error) throw error
+    if (error) { throw error }
     return data
   } catch (error) {
     console.error(`Error updating game ${gameId}:`, error)
@@ -92,14 +92,14 @@ export async function updateGame(
   }
 }
 
-export async function deleteGame(gameId: string): Promise<boolean> {
+export async function deleteGame (gameId: string): Promise<boolean> {
   try {
     const { error } = await supabase
       .from('games')
       .delete()
       .eq('game_id', gameId)
 
-    if (error) throw error
+    if (error) { throw error }
     return true
   } catch (error) {
     console.error(`Error deleting game ${gameId}:`, error)

@@ -1,16 +1,12 @@
 #!/bin/bash
 set -e
 
-# Install Bun if not already installed
-if ! command -v bun &> /dev/null; then
-    echo "Installing Bun..."
-    curl -fsSL https://bun.sh/install | bash
-    export PATH="$HOME/.bun/bin:$PATH"
-fi
+# Print environment info
+echo "Node version: $(node -v)"
+echo "Bun version: $(bun -v || echo 'Bun not found')"
 
-# Install dependencies using Bun
+# Install dependencies
 echo "Installing dependencies..."
-# First install without --frozen-lockfile to ensure lockfile is up to date
 bun install --no-save
 
 # Build the application
@@ -18,19 +14,20 @@ echo "Building application..."
 bun run build
 
 # Create .output directory structure
+echo "Setting up output directory..."
 mkdir -p .output/public
 
-# Copy the build output to .output/public
-if [ -d ".nuxt/dist/client" ]; then
-    echo "Copying Nuxt client files..."
-    cp -r .nuxt/dist/client/* .output/public/
+# Copy static files
+if [ -d ".output/public" ]; then
+    echo "Copying public files..."
+    cp -r .output/public/* .output/public/
 fi
 
-# Create a basic server.js for Vercel
+# Create a simple server.js for Vercel
 echo '// Vercel serverless function
 const { createServer } = require("node:http");
 const { parse } = require("node:url");
-const { mkdir, readFile } = require("node:fs/promises");
+const { readFile } = require("node:fs/promises");
 const { join, extname } = require("node:path");
 
 const PORT = process.env.PORT || 3000;
@@ -67,9 +64,17 @@ async function handleStatic(req, res) {
         res.end(content, "utf-8");
     } catch (error) {
         if (error.code === "ENOENT") {
-            res.writeHead(404);
-            res.end("Not found");
+            // Serve index.html for SPA routing
+            if (req.url.startsWith("/api/")) {
+                res.writeHead(404);
+                res.end("Not found");
+            } else {
+                const indexHtml = await readFile(join(__dirname, "./public/index.html"));
+                res.writeHead(200, { "Content-Type": "text/html" });
+                res.end(indexHtml);
+            }
         } else {
+            console.error("Server error:", error);
             res.writeHead(500);
             res.end(`Server Error: ${error.code}`);
         }
@@ -77,18 +82,7 @@ async function handleStatic(req, res) {
 }
 
 // Create server
-const server = createServer((req, res) => {
-    // Handle API routes
-    if (req.url.startsWith("/api/")) {
-        // API routes are handled by Vercel serverless functions
-        res.writeHead(200, { "Content-Type": "application/json" });
-        res.end(JSON.stringify({ message: "API route" }));
-        return;
-    }
-    
-    // Handle static files
-    handleStatic(req, res);
-});
+const server = createServer(handleStatic);
 
 // Start server
 server.listen(PORT, (error) => {
@@ -98,9 +92,6 @@ server.listen(PORT, (error) => {
     }
     console.log(`Server is running on http://localhost:${PORT}`);
 });' > .output/server.js
-
-# Make the script executable
-chmod +x .output/server.js
 
 # Create a simple vercel.json in the output directory
 echo '{
@@ -116,5 +107,8 @@ echo '{
     { "src": "/(.*)", "dest": "/" }
   ]
 }' > .output/vercel.json
+
+# Make the script executable
+chmod +x .output/server.js
 
 echo "Build completed successfully!"

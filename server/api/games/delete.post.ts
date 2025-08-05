@@ -1,5 +1,5 @@
-import { deleteGame } from '~/server/utils/database'
 import { defineEventHandler, createError, readBody } from 'h3'
+import { deleteGame } from '~/server/utils/database'
 
 export default defineEventHandler(async (event) => {
   try {
@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
     }
 
     const success = await deleteGame(gameId)
-    
+
     if (!success) {
       throw new Error('Failed to delete game')
     }

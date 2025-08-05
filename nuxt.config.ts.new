@@ -3,34 +3,43 @@ import { defineNuxtConfig } from 'nuxt/config'
 
 export default defineNuxtConfig({
   devtools: { enabled: true },
-
-  // Modules configuration
-  modules: [
-    ['@primevue/nuxt-module', {
-      options: {
-        unstyled: true
-      },
-      importPT: { from: '~/assets/presets/mypreset' },
-      components: {
-        include: ['Toast']
-      }
-    }],
-    '@unocss/nuxt',
-    '@nuxtjs/eslint-module'
-  ],
-
-  // CSS files to be included
-  css: [
-    'primeicons/primeicons.css',
-    '~/assets/css/main.css'
-  ],
-
+  
   // Build configuration
   build: {
     transpile: ['primevue']
   },
-
-  // Runtime configuration
+  
+  // Modules
+  modules: [
+    // PrimeVue module
+    ['@primevue/nuxt-module', {
+      options: { unstyled: true },
+      importPT: { from: '~/assets/presets/mypreset' },
+      components: { include: ['Toast'] }
+    }],
+    // UnoCSS module (must be after other style modules)
+    '@unocss/nuxt',
+    // ESLint module
+    '@nuxtjs/eslint-module'
+  ],
+  
+  // CSS
+  css: [
+    'primeicons/primeicons.css',
+    '~/assets/css/main.css'
+  ],
+  
+  // Vite configuration
+  vite: {
+    optimizeDeps: {
+      include: ['@unocss/reset']
+    },
+    ssr: {
+      noExternal: ['@unocss/reset']
+    }
+  },
+  
+  // Runtime config
   runtimeConfig: {
     // Private keys are only available on the server
     supabaseUrl: process.env.SUPABASE_URL,
@@ -42,8 +51,8 @@ export default defineNuxtConfig({
       supabaseAnonKey: process.env.SUPABASE_ANON_KEY
     }
   },
-
-  // Application-specific configuration
+  
+  // App configuration
   app: {
     head: {
       title: 'Smilegate Vietnam - Game Management',
@@ -57,8 +66,8 @@ export default defineNuxtConfig({
       ]
     }
   },
-
-  // Nitro server configuration
+  
+  // Nitro configuration
   nitro: {
     compatibilityDate: '2025-08-02'
   }
