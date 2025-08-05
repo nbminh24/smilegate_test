@@ -1,17 +1,18 @@
 import { findGameById } from '~/server/utils/database'
+import { defineEventHandler, createError, getRouterParam } from 'h3'
 
-export default defineEventHandler((event) => {
+export default defineEventHandler(async (event) => {
   try {
-    const id = getRouterParam(event, 'id')
+    const gameId = getRouterParam(event, 'id')
 
-    if (!id) {
+    if (!gameId) {
       throw createError({
         statusCode: 400,
         statusMessage: 'Game ID is required'
       })
     }
 
-    const game = findGameById(id)
+    const game = await findGameById(gameId)
 
     if (!game) {
       throw createError({

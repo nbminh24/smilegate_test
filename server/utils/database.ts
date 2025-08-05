@@ -1,68 +1,108 @@
-import { readFileSync, writeFileSync } from 'fs'
-import { resolve } from 'path'
+import { supabase } from './supabase'
 
 export interface Game {
-    id: string
-    category: string
-    name: {
-        [key: string]: string
-    }
-    defaultLanguage: string
-    createdAt: string
-    updatedAt: string
+  game_id: string
+  category: string
+  name: Record<string, string>
+  default_language: string
+  created_at?: string
+  updated_at?: string
 }
 
-const DB_PATH = resolve(process.cwd(), 'server/data/games.json')
-
-export function getGames (): Game[] {
+export async function getGames(): Promise<Game[]> {
   try {
-    const data = readFileSync(DB_PATH, 'utf-8')
-    const json = JSON.parse(data)
-    const games: Game[] = json.games || []
-    // Sort games by updatedAt in descending order, handling missing timestamps
-    return games.sort((a, b) => {
-      const dateA = a.updatedAt ? new Date(a.updatedAt).getTime() : 0
-      const dateB = b.updatedAt ? new Date(b.updatedAt).getTime() : 0
-      return dateB - dateA
-    })
+    const { data, error } = await supabase
+      .from('games')
+      .select('*')
+      .order('updated_at', { ascending: false })
+
+    if (error) throw error
+    
+    // Map game_id to id for frontend compatibility
+    return (data || []).map(game => ({
+      ...game,
+      id: game.game_id // Add id field that matches the frontend's expectation
+    }))
   } catch (error) {
+    console.error('Error fetching games:', error)
     return []
   }
 }
 
-export function findGameById (id: string): Game | null {
-  const games = getGames()
-  return games.find(game => game.id === id) || null
-}
+export async function findGameById(gameId: string): Promise<Game | null> {
+  try {
+    const { data, error } = await supabase
+      .from('games')
+      .select('*')
+      .eq('game_id', gameId)
+      .single()
 
-export function addGame (game: Omit<Game, 'createdAt' | 'updatedAt'>): void {
-  const games = getGames()
-  const now = new Date().toISOString()
-  const newGame: Game = {
-    ...game,
-    createdAt: now,
-    updatedAt: now
+    if (error) throw error
+    
+    // Add id field for frontend compatibility
+    return data ? { ...data, id: data.game_id } : null
+  } catch (error) {
+    console.error(`Error finding game ${gameId}:`, error)
+    return null
   }
-  games.unshift(newGame) // Add to the beginning
-  writeFileSync(DB_PATH, JSON.stringify({ games }, null, 2))
 }
 
-export function updateGame (id: string, updatedGameData: Omit<Game, 'createdAt' | 'updatedAt'>): void {
-  const games = getGames()
-  const index = games.findIndex(game => game.id === id)
-  if (index !== -1) {
-    const originalGame = games[index]
-    games[index] = {
-      ...originalGame, // Preserve original createdAt
-      ...updatedGameData, // Apply new data
-      updatedAt: new Date().toISOString() // Set new updatedAt
+export async function addGame(game: Omit<Game, 'created_at' | 'updated_at'>): Promise<Game> {
+  try {
+    const newGame = {
+      ...game,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
     }
-    writeFileSync(DB_PATH, JSON.stringify({ games }, null, 2))
+
+    const { data, error } = await supabase
+      .from('games')
+      .insert([newGame])
+      .select()
+      .single()
+
+    if (error) throw error
+    return data
+  } catch (error) {
+    console.error('Error adding game:', error)
+    throw error
   }
 }
 
-export function deleteGame (id: string): void {
-  const games = getGames()
-  const filteredGames = games.filter(game => game.id !== id)
-  writeFileSync(DB_PATH, JSON.stringify({ games: filteredGames }, null, 2))
+export async function updateGame(
+  gameId: string, 
+  gameData: Partial<Omit<Game, 'created_at' | 'updated_at'>>
+): Promise<Game | null> {
+  try {
+    const { data, error } = await supabase
+      .from('games')
+      .update({
+        ...gameData,
+        updated_at: new Date().toISOString()
+      })
+      .eq('game_id', gameId)
+      .select()
+      .single()
+
+    if (error) throw error
+    return data
+  } catch (error) {
+    console.error(`Error updating game ${gameId}:`, error)
+    throw error
+  }
+}
+
+export async function deleteGame(gameId: string): Promise<boolean> {
+  try {
+    const { error } = await supabase
+      .from('games')
+      .delete()
+      .eq('game_id', gameId)
+
+    if (error) throw error
+    return true
+  } catch (error) {
+    console.error(`Error deleting game ${gameId}:`, error)
+    return false
+  }
 }

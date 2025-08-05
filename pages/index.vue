@@ -573,8 +573,17 @@ const confirmSingleDelete = async () => {
 // Watch for filter changes to reset pagination
 watch([searchKeyword, selectedCategory], () => {
   // Reset to the first page whenever filters change
-  if (currentPage.value !== 1) {
-    currentPage.value = 1
+  currentPage.value = 1
+})
+
+// Watch for rowsPerPage changes to adjust current page if needed
+watch(rowsPerPage, (newRowsPerPage, oldRowsPerPage) => {
+  const totalItems = filteredGames.value.length
+  const maxPage = Math.ceil(totalItems / newRowsPerPage)
+  
+  // If current page would be empty after the change, go to the last valid page
+  if (currentPage.value > maxPage) {
+    currentPage.value = maxPage || 1 // Ensure at least page 1
   }
 })
 

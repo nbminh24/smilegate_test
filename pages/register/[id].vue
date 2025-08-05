@@ -94,7 +94,13 @@
 
               <OverlayPanel ref="languageOverlay" class="language-overlay">
                 <div class="flex flex-col gap-2 p-2">
-                  <Button v-for="lang in languagesToAdd" :key="lang.code" :label="lang.name" class="btn-overlay" @click="addLanguage(lang)" />
+                  <Button 
+                    v-for="lang in languagesToAdd" 
+                    :key="lang.code" 
+                    :label="lang.name" 
+                    class="btn-overlay !border-0 !shadow-none !bg-transparent hover:!bg-gray-100 dark:hover:!bg-gray-700" 
+                    @click="addLanguage(lang)" 
+                  />
                 </div>
               </OverlayPanel>
             </div>
@@ -127,9 +133,17 @@
 
                   <!-- Right Side: Controls (Single Row) -->
                   <div class="flex items-center gap-4 pb-5">
-                    <div class="flex items-center">
-                      <RadioButton v-model="gameData.defaultLanguage" :input-id="`default_lang_${lang.code}`" name="defaultLanguage" :value="lang.code" />
-                      <label :for="`default_lang_${lang.code}`" class="ml-2 text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">Set as Default</label>
+                    <div 
+                      v-if="gameData.defaultLanguage !== lang.code"
+                      class="flex items-center cursor-pointer"
+                      @click="gameData.defaultLanguage = lang.code"
+                    >
+                      <i class="pi pi-circle text-gray-400 hover:text-primary-500 transition-colors" />
+                      <span class="ml-2 text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">Set as Default</span>
+                    </div>
+                    <div v-else class="flex items-center">
+                      <i class="pi pi-check-circle text-primary-500" />
+                      <span class="ml-2 text-sm text-primary-600 dark:text-primary-400 font-medium">Default</span>
                     </div>
                   </div>
                 </div>
@@ -297,7 +311,13 @@ const fetchGame = async () => {
   try {
     loading.value = true
     const response = await $fetch(`/api/games/${route.params.id}`)
-    gameData.value = { ...response }
+    
+    // Map backend fields to frontend field names
+    gameData.value = {
+      ...response,
+      defaultLanguage: response.default_language, // Map default_language to defaultLanguage
+      id: response.game_id // Map game_id to id
+    }
 
     const nameKeys = Object.keys(response.name || {})
     availableLanguages.value = allLanguages.value.filter(lang => nameKeys.includes(lang.code))
@@ -305,6 +325,7 @@ const fetchGame = async () => {
     // If no languages are loaded from the server, default to showing English.
     if (availableLanguages.value.length === 0) {
       availableLanguages.value.push(allLanguages.value.find(l => l.code === 'en'))
+      gameData.value.defaultLanguage = 'en'
     }
   } catch (error) {
     $toast.add({ group: 'br', severity: 'error', summary: 'Error', detail: 'Failed to load game data.', life: 2000 })
@@ -314,37 +335,49 @@ const fetchGame = async () => {
 }
 
 const updateGame = async () => {
-  // Manually validate all required fields before submitting
-  validateField('category')
-  validateField(`name_${gameData.value.defaultLanguage}`)
-
-  if (!isFormValid.value) {
-    $toast.add({ group: 'br', severity: 'error', summary: 'Validation Error', detail: 'Please fix the errors before submitting.', life: 2000 })
-    return
-  }
-
-  // Check for duplicate name
-  const defaultLang = gameData.value.defaultLanguage
-  const defaultName = gameData.value.name[defaultLang]?.trim().toLowerCase()
-  const currentId = route.params.id
-
-  const duplicateNameGame = allGames.value.find(game =>
-    game.id !== currentId && // Exclude the current game from the check
-    Object.values(game.name).some(name => name && name.toLowerCase() === defaultName)
-  )
-
-  if (duplicateNameGame) {
-    $toast.add({ group: 'br', severity: 'error', summary: 'Duplicate Error', detail: `A game with the name '${gameData.value.name[defaultLang]}' already exists.`, life: 3000 })
-    return
-  }
-
-  loading.value = true
   try {
-    await $fetch(`/api/games/${route.params.id}`, { method: 'PUT', body: gameData.value })
-    $toast.add({ group: 'br', severity: 'success', summary: 'Success', detail: 'Game updated successfully!', life: 2000 })
-    await navigateTo('/')
+    // Manually validate all required fields before submitting
+    validateField('category')
+    validateField(`name_${gameData.value.defaultLanguage}`)
+
+    if (!isFormValid.value) {
+      $toast.add({ group: 'br', severity: 'error', summary: 'Validation Error', detail: 'Please fix the errors before submitting.', life: 2000 })
+      return
+    }
+
+    loading.value = true
+    
+    // Prepare the data to send to the API
+    const updateData = {
+      ...gameData.value,
+      default_language: gameData.value.defaultLanguage, // Map to backend field name
+      game_id: gameData.value.id // Make sure game_id is included
+    }
+
+    const response = await $fetch(`/api/games/${route.params.id}`, { 
+      method: 'PUT', 
+      body: updateData 
+    })
+    
+    if (response) {
+      $toast.add({ 
+        group: 'br', 
+        severity: 'success', 
+        summary: 'Success', 
+        detail: 'Game updated successfully!', 
+        life: 2000 
+      })
+      await navigateTo('/')
+    }
   } catch (error) {
-    $toast.add({ group: 'br', severity: 'error', summary: 'Error', detail: 'Failed to update game.', life: 2000 })
+    console.error('Update error:', error)
+    $toast.add({ 
+      group: 'br', 
+      severity: 'error', 
+      summary: 'Error', 
+      detail: error.data?.message || 'Failed to update game. Please try again.', 
+      life: 3000 
+    })
   } finally {
     loading.value = false
   }

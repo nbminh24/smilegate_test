@@ -1,4 +1,5 @@
 import { getGames } from '~/server/utils/database'
+import { defineEventHandler, createError } from 'h3'
 
 export default defineEventHandler(async (_event) => {
   try {

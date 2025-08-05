@@ -154,8 +154,9 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useToast } from 'primevue/usetoast'
+import { useFetch, navigateTo } from '#imports'
 import RadioButton from 'primevue/radiobutton'
 
 const toast = useToast()
@@ -248,100 +249,138 @@ const isFormValid = computed(() => {
 
 // Methods
 const validateField = (field) => {
-  switch (field) {
-    case 'id':
-      if (!gameData.value.id.trim()) { validationErrors.value.id = 'Game ID is required.' } else if (!/^[A-Z0-9_.]+$/.test(gameData.value.id)) { validationErrors.value.id = 'ID must be uppercase letters, numbers, underscores, or periods.' } else { delete validationErrors.value.id }
-      break
-    case 'category':
-      if (!gameData.value.category) { validationErrors.value.category = 'Category is required.' } else { delete validationErrors.value.category }
-      break
-    default:
-      if (field.startsWith('name_')) {
-        const langCode = field.replace('name_', '')
-        // Only validate if it's the default language
-        if (langCode === gameData.value.defaultLanguage && !gameData.value.name[langCode]?.trim()) {
-          validationErrors.value[field] = `${allLanguages.value.find(l => l.code === langCode).name} name is required as it is the default.`
-        } else {
-          delete validationErrors.value[field]
-        }
-      }
-      break
+  validationErrors.value[field] = ''
+  
+  if (field === 'id') {
+    if (!gameData.value.id) {
+      validationErrors.value[field] = 'Game ID is required'
+    } else if (!/^[a-zA-Z0-9_-]{3,50}$/.test(gameData.value.id)) {
+      validationErrors.value[field] = 'Game ID must be 3-50 characters long and can only contain letters, numbers, underscores and dashes'
+    }
+  } else if (field.startsWith('name_')) {
+    const langCode = field.replace('name_', '')
+    if (langCode === gameData.value.defaultLanguage && !gameData.value.name[langCode]?.trim()) {
+      validationErrors.value[field] = 'Name is required for default language'
+    }
+  } else if (field === 'category' && !gameData.value.category) {
+    validationErrors.value[field] = 'Category is required'
+  } else if (field === 'defaultLanguage' && !gameData.value.defaultLanguage) {
+    validationErrors.value[field] = 'Default language is required'
   }
 }
 
 const resetForm = () => {
-  const savedCategory = gameData.value.category
   gameData.value = JSON.parse(JSON.stringify(initialGameData))
-  gameData.value.category = savedCategory
-
   availableLanguages.value = [allLanguages.value[0]]
   validationErrors.value = {}
 }
 
 const fetchAllGames = async () => {
   try {
-    const response = await $fetch('/api/games')
-    allGames.value = response.games || []
+    const { data } = await useFetch('/api/games')
+    allGames.value = data.value?.games || []
   } catch (error) {
-    toast.add({ group: 'br', severity: 'warn', summary: 'Warning', detail: 'Could not verify duplicate games.', life: 3000 })
+    toast.add({ 
+      severity: 'warn', 
+      summary: 'Warning', 
+      detail: 'Could not verify duplicate games.', 
+      life: 3000 
+    })
   }
 }
 
-onMounted(fetchAllGames)
-
 const createGame = async () => {
-  // 1. Manually validate all required fields before submitting
-  validateField('id')
-  validateField('category')
-  validateField(`name_${gameData.value.defaultLanguage}`)
+  // Validate all fields
+  Object.keys(gameData.value).forEach(field => {
+    if (field === 'name') {
+      // Validate all name fields
+      Object.keys(gameData.value.name).forEach(lang => {
+        if (lang === gameData.value.defaultLanguage) {
+          validateField(`name_${lang}`)
+        }
+      })
+    } else {
+      validateField(field)
+    }
+  })
 
-  if (!isFormValid.value) {
-    toast.add({ group: 'br', severity: 'error', summary: 'Validation Error', detail: 'Please fix the errors before submitting.', life: 3000 })
+  // Check if any validation errors exist
+  const hasErrors = Object.values(validationErrors.value).some(Boolean)
+  if (hasErrors) {
+    toast.add({ 
+      severity: 'warn', 
+      summary: 'Validation Error', 
+      detail: 'Please fill in all required fields correctly',
+      group: 'br',
+      life: 2000
+    })
     return
   }
 
-  loading.value = true
-
-  // 2. Check for duplicates
-  const gameId = gameData.value.id.trim()
-  const defaultLang = gameData.value.defaultLanguage
-  const defaultName = gameData.value.name[defaultLang]?.trim()
-
-  const isIdDuplicate = allGames.value.some(g => g.id.toLowerCase() === gameId.toLowerCase())
-  if (isIdDuplicate) {
-    toast.add({ group: 'br', severity: 'error', summary: 'Duplicate Error', detail: `Game ID '${gameId}' already exists.`, life: 3000 })
-    loading.value = false
-    return
-  }
-
-  const isNameDuplicate = allGames.value.some(g =>
-    Object.values(g.name).some(name => name && defaultName && name.toLowerCase() === defaultName.toLowerCase())
-  )
-  if (isNameDuplicate) {
-    toast.add({ group: 'br', severity: 'error', summary: 'Duplicate Error', detail: `A game with the name '${defaultName}' already exists.`, life: 3000 })
-    loading.value = false
-    return
-  }
-
-  // 3. Attempt to create the game
   try {
-    await $fetch('/api/games', {
-      method: 'POST',
-      body: gameData.value,
-      // The API returns a 201 status with an empty body on success.
-      // We must ignore the response body to prevent a JSON parsing error.
-      ignoreResponseError: true
+    loading.value = true
+    
+    // Prepare the game data
+    const gameDataToSend = {
+      id: gameData.value.id,
+      category: gameData.value.category,
+      name: {},
+      defaultLanguage: gameData.value.defaultLanguage
+    }
+
+    // Only include non-empty names
+    Object.entries(gameData.value.name).forEach(([lang, name]) => {
+      if (name && name.trim()) {
+        gameDataToSend.name[lang] = name.trim()
+      }
     })
 
-    // Success! Show notification, refresh the game list from the server, and reset the form.
-    toast.add({ group: 'br', severity: 'success', summary: 'Success', detail: 'Game created successfully!', life: 2000 })
-    await fetchAllGames()
+    // Send the request
+    const { data, error } = await useFetch('/api/games', {
+      method: 'POST',
+      body: gameDataToSend
+    })
+
+    if (error.value) {
+      throw error.value
+    }
+
+    // Show success message
+    toast.add({ 
+      severity: 'success',
+      summary: 'Success',
+      detail: 'Game created successfully',
+      group: 'br',
+      life: 2000
+    })
+    
+    // Keep the category but reset other fields for the next entry
+    const currentCategory = gameData.value.category
     resetForm()
+    
+    // Restore the category for the next entry
+    if (currentCategory) {
+      gameData.value.category = currentCategory
+      // Also update the selected category label
+      const selected = categoryOptions.find(opt => opt.value === currentCategory)
+      if (selected) {
+        selectedCategoryLabel.value = selected.label
+      }
+    }
   } catch (error) {
-    const errorMessage = error.data?.message || 'An unexpected error occurred.'
-    toast.add({ group: 'br', severity: 'error', summary: 'Error', detail: `Failed to create game: ${errorMessage}`, life: 3000 })
+    console.error('Error creating game:', error)
+    toast.add({ 
+      severity: 'error',
+      summary: 'Error',
+      detail: error.data?.message || 'Failed to create game. Please try again.',
+      group: 'br',
+      life: 2000
+    })
   } finally {
     loading.value = false
   }
 }
+
+// Lifecycle hooks
+onMounted(fetchAllGames)
 </script>

@@ -1,18 +1,23 @@
 import { deleteGame } from '~/server/utils/database'
+import { defineEventHandler, createError, readBody } from 'h3'
 
 export default defineEventHandler(async (event) => {
   try {
     const body = await readBody(event)
-    const { id } = body
+    const { id: gameId } = body
 
-    if (!id) {
+    if (!gameId) {
       throw createError({
         statusCode: 400,
         statusMessage: 'Game ID is required'
       })
     }
 
-    deleteGame(id)
+    const success = await deleteGame(gameId)
+    
+    if (!success) {
+      throw new Error('Failed to delete game')
+    }
 
     return {
       success: true,

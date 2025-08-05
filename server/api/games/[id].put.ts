@@ -1,11 +1,12 @@
 import { updateGame } from '~/server/utils/database'
+import { defineEventHandler, createError, getRouterParam, readBody } from 'h3'
 
 export default defineEventHandler(async (event) => {
   try {
-    const id = getRouterParam(event, 'id')
+    const gameId = getRouterParam(event, 'id')
     const body = await readBody(event)
 
-    if (!id) {
+    if (!gameId) {
       throw createError({
         statusCode: 400,
         statusMessage: 'Game ID is required'
@@ -48,14 +49,14 @@ export default defineEventHandler(async (event) => {
       })
     }
 
+    // Don't allow changing game_id through update
     const updatedGameData = {
-      id,
       category: body.category,
       name: body.name,
-      defaultLanguage: body.defaultLanguage
+      default_language: body.defaultLanguage
     }
 
-    updateGame(id, updatedGameData)
+    await updateGame(gameId, updatedGameData)
 
     return {
       message: 'Game updated successfully',

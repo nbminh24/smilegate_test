@@ -1,23 +1,24 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import { defineNuxtConfig } from 'nuxt/config'
+
 export default defineNuxtConfig({
   devtools: { enabled: true },
   nitro: {
     compatibilityDate: '2025-08-02'
   },
   modules: [
-    '@primevue/nuxt-module',
+    ['@primevue/nuxt-module', {
+      options: {
+        unstyled: true
+      },
+      importPT: { from: '~/assets/presets/mypreset' },
+      components: {
+        include: ['Toast']
+      }
+    }],
     '@unocss/nuxt',
     '@nuxtjs/eslint-module'
   ],
-  primevue: {
-    options: {
-      unstyled: true
-    },
-    importPT: { from: '~/assets/presets/mypreset' },
-    components: {
-      include: ['Toast']
-    }
-  },
   css: [
     'primeicons/primeicons.css',
     '~/assets/css/main.css'
@@ -27,9 +28,13 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     // Private keys are only available on the server
+    supabaseUrl: process.env.SUPABASE_URL,
+    supabaseAnonKey: process.env.SUPABASE_ANON_KEY,
     // Public keys that are exposed to the client
     public: {
-      apiBase: '/api'
+      apiBase: '/api',
+      supabaseUrl: process.env.SUPABASE_URL,
+      supabaseAnonKey: process.env.SUPABASE_ANON_KEY
     }
   },
   app: {

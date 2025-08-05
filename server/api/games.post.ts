@@ -1,4 +1,5 @@
 import { addGame } from '~/server/utils/database'
+import { defineEventHandler, createError, readBody } from 'h3'
 
 export default defineEventHandler(async (event) => {
   try {
@@ -48,14 +49,32 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    const newGameData = {
-      id: body.id,
-      category: body.category,
-      name: body.name,
-      defaultLanguage: body.defaultLanguage
+    // Validate game_id format (alphanumeric, dashes, underscores)
+    const gameIdRegex = /^[a-zA-Z0-9_-]{3,50}$/
+    if (!gameIdRegex.test(body.id)) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: 'Game ID must be 3-50 characters long and can only contain letters, numbers, underscores and dashes'
+      })
     }
 
-    addGame(newGameData)
+    // Check if game_id already exists
+    const existingGame = await findGameById(body.id)
+    if (existingGame) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: 'Game ID already exists'
+      })
+    }
+
+    const newGameData = {
+      game_id: body.id,
+      category: body.category,
+      name: body.name,
+      default_language: body.defaultLanguage
+    }
+
+    await addGame(newGameData)
 
     return {
       message: 'Game created successfully',
