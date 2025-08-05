@@ -571,13 +571,7 @@ const confirmSingleDelete = async () => {
 
 // Lifecycle
 // Watch for filter changes to reset pagination
-watchEffect(() => {
-  // Access dependencies to trigger the effect
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const keyword = searchKeyword.value
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const category = selectedCategory.value
-
+watch([searchKeyword, selectedCategory], () => {
   // Reset to the first page whenever filters change
   if (currentPage.value !== 1) {
     currentPage.value = 1
