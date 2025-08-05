@@ -13,7 +13,7 @@ export async function getGames (): Promise<Game[]> {
   try {
     const { data, error } = await supabase
       .from('games')
-      .select('*')
+      .select('game_id, category, name, default_language, updated_at') // Chỉ lấy các cột cần thiết
       .order('updated_at', { ascending: false })
 
     if (error) { throw error }

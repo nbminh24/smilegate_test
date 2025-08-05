@@ -1,59 +1,38 @@
-# Smilegate Vietnam - Game Management System
+# 1. Giới thiệu dự án
 
-A modern, full-featured web application for managing a game database. This project was developed as part of the Frontend Engineer Intern Entry Test for Smilegate Vietnam. It demonstrates proficiency in building responsive, feature-rich applications using a modern Vue.js stack, including Nuxt 3, TypeScript, and UnoCSS.
+Đây là một ứng dụng web hiện đại dùng để quản lý cơ sở dữ liệu game. Giao diện được thiết kế sạch sẽ, trực quan và đầy đủ các tính năng CRUD (Tạo, Đọc, Cập nhật, Xóa).
 
-The application provides a clean and intuitive interface for performing full CRUD (Create, Read, Update, Delete) operations on game entries, complete with multilingual support, advanced filtering, and real-time validation.
+**Dự án này được phát triển như một phần của bài kiểm tra đầu vào cho vị trí Thực tập sinh Kỹ sư Frontend tại Smilegate Vietnam.** Nó thể hiện năng lực xây dựng các ứng dụng có khả năng phản hồi nhanh, giàu tính năng và hiệu suất cao bằng cách sử dụng một stack công nghệ hiện đại.
 
-## 🚀 Key Features
+## 2. Các tính năng chính
 
-- **Full CRUD Functionality**: Seamlessly create, view, edit, and delete game entries.
-- **Advanced Game List**: A robust data table displays all games with features like:
-    - **Dynamic Search**: Instantly search for games by ID or name.
-    - **Category Filtering**: Filter games by genre (e.g., RPG, Action, Sci-Fi).
-    - **Pagination**: Efficiently navigate through large datasets.
-    - **Bulk Deletion**: Select and delete multiple games at once.
-- **Multilingual Support**: Add and manage game names in multiple languages (EN, KR, JP), with one designated as the default.
-- **Responsive UI**: The interface is built with PrimeVue and styled with UnoCSS, ensuring a great experience on all screen sizes.
-- **Form Validation**: Client-side validation powered by `yup` provides instant feedback to users, preventing incorrect data submission.
-- **Modern Styling**: A custom, modern design language implemented with UnoCSS shortcuts, featuring consistent button styles, hover effects, and a clean layout.
+### Trang Danh sách game (Game List Page)
 
-## 🛠️ Tech Stack
+- **Tìm kiếm & Lọc nâng cao**: Hỗ trợ tìm kiếm tức thì theo từ khóa và lọc game theo danh mục (Category).
+- **Hiển thị dạng bảng**: Danh sách game được trình bày trong một bảng dữ liệu mạnh mẽ, có hỗ trợ phân trang để điều hướng hiệu quả qua các bộ dữ liệu lớn.
+- **Xóa hàng loạt**: Cho phép người dùng chọn và xóa nhiều game cùng một lúc để tăng hiệu quả quản lý.
+- **Đăng ký game mới**: Cung cấp nút bấm để dễ dàng điều hướng đến trang tạo game mới.
 
-- **Framework**: [Nuxt 3](https://nuxt.com/)
-- **Language**: [TypeScript](https://www.typescriptlang.org/)
-- **UI Components**: [PrimeVue](https://primevue.org/)
-- **Styling**: [UnoCSS](https://unocss.dev/) (with custom shortcuts)
-- **Validation**: [Yup](https://github.com/jquense/yup)
-- **Linting**: [ESLint](https://eslint.org/)
-- **Package Manager**: [Bun](https://bun.sh/)
-- **Server**: Nuxt Nitro server with a file-based JSON database.
+### Trang Đăng ký game (Game Registration Page)
 
-## 🌱 Development Journey & Key Improvements
+- **Tạo và Chỉnh sửa**: Một form duy nhất được sử dụng cho cả việc tạo game mới và cập nhật thông tin của game đã có.
+- **Hỗ trợ đa ngôn ngữ**: Cho phép nhập tên game bằng nhiều ngôn ngữ khác nhau. Các ngôn ngữ được hỗ trợ bao gồm **Tiếng Anh (EN)**, **Tiếng Hàn (KO)**, và **Tiếng Nhật (JA)**.
+- **Quản lý ngôn ngữ linh hoạt**: Người dùng có thể thêm, xóa các mục nhập ngôn ngữ và chỉ định một ngôn ngữ làm ngôn ngữ mặc định.
+- **Xác thực dữ liệu (Validation)**: Sử dụng thư viện `yup` để xác thực dữ liệu đầu vào theo thời gian thực ngay trên client, đảm bảo tính toàn vẹn của dữ liệu trước khi gửi lên server.
 
-This project evolved through several stages of development, focusing on both functionality and code quality:
+## 3. Công nghệ và Công cụ
 
-1.  **Initial Setup**: Scaffolding the Nuxt 3 project, integrating PrimeVue for UI components, and setting up UnoCSS for a utility-first styling approach.
-2.  **Core Feature Implementation**: Building the main pages for listing and creating games, and setting up the server API for CRUD operations.
-3.  **UI/UX Refinement**: 
-    - Modernized all button styles (`btn-primary`, `btn-secondary`) with rounded corners, shadows, and scaling hover effects for a more dynamic feel.
-    - Improved layout and spacing on the game list and registration pages for better readability and user experience.
-    - Removed unnecessary borders on UI elements (like language selection buttons) for a cleaner, more modern aesthetic.
-4.  **Bug Squashing & Logic Correction**:
-    - **Filtering Logic**: Fixed a critical bug where the category filter failed due to a value mismatch (`Sci_Fi` vs. `Sci-Fi`).
-    - **Pagination**: Resolved an issue where the view would not update correctly by implementing a `watchEffect` to reset the page to 1 whenever search or filter criteria changed.
-5.  **Code Quality & Linting**: 
-    - **ESLint Overhaul**: Systematically resolved all ESLint parsing errors and warnings across the entire project.
-    - **Configuration Fixes**: Updated `tsconfig.json` and `.eslintrc.cjs` to correctly parse `.vue` files in nested directories.
-    - **Code Cleanup**: Addressed minor issues like trailing spaces and unused variables to achieve a perfectly clean linting state.
+- **Framework**: **Nuxt 3** - Một framework Vue.js mạnh mẽ để xây dựng các ứng dụng full-stack.
+- **Styling**: **UnoCSS** - Một công cụ CSS utility-first có khả năng tùy biến cao, được sử dụng để tạo ra một hệ thống thiết kế nhất quán và hiện đại.
+- **UI Components**: **PrimeVue** - Một bộ thư viện component UI toàn diện cho Vue.
+- **Package Manager**: **Bun** - Một trình quản lý gói và runtime JavaScript cực nhanh.
+- **Linter**: **ESLint** - Được cấu hình để đảm bảo code luôn sạch sẽ, dễ đọc và nhất quán.
+- **Backend**: **Nuxt 3 Server Engine (Nitro)** - Backend được tích hợp ngay trong project Nuxt, xử lý các yêu cầu API và logic phía máy chủ.
+- **Database**: **Supabase** - Một giải pháp Backend-as-a-Service mạnh mẽ, được sử dụng để lưu trữ và quản lý dữ liệu game.
 
-## 🚀 Getting Started
+## 4. Hướng dẫn sử dụng
 
-### Prerequisites
-
-- [Node.js](https://nodejs.org/en/) (v18 or newer)
-- [Bun](https://bun.sh/) (v1.0 or newer)
-
-### Installation & Setup
+### Cài đặt và Chạy dự án
 
 1.  **Clone the repository**:
     ```bash
@@ -61,62 +40,28 @@ This project evolved through several stages of development, focusing on both fun
     cd <project-directory>
     ```
 
-2.  **Install dependencies**:
+2.  **Cấu hình biến môi trường**:
+    Sao chép tệp `.env.example` để tạo tệp `.env` mới và điền thông tin Supabase của bạn:
+    ```bash
+    cp .env.example .env
+    ```
+    Nội dung tệp `.env`:
+    ```
+    SUPABASE_URL="YOUR_SUPABASE_URL"
+    SUPABASE_ANON_KEY="YOUR_SUPABASE_ANON_KEY"
+    ```
+
+3.  **Install dependencies**:
     ```bash
     bun install
     ```
 
-3.  **Run the development server**:
-    The application will be available at `http://localhost:3000`.
+4.  **Run the development server**:
+    Ứng dụng sẽ có sẵn tại `http://localhost:3000`.
     ```bash
     bun run dev
     ```
 
-### Building for Production
+### Truy cập phiên bản đã deploy
 
-1.  **Generate the production build**:
-    ```bash
-    bun run build
-    ```
-
-2.  **Preview the production build**:
-    ```bash
-    bun run preview
-    ```
-
-The application will be built into the `.output` directory, ready for deployment on any static hosting provider.
-
-## ✅ Code Quality & Linting
-
-This project uses ESLint, configured with `@nuxt/eslint-config`, to enforce a consistent and high-quality coding style. 
-
-To run the linter, use the following command:
-```bash
-bun run lint
-```
-
-All linting issues, including parsing errors and rule violations, have been resolved to ensure a clean and maintainable codebase.
-
-## 📁 Project Structure
-
-```
-.eta/
-├── assets/                 # Static assets like CSS
-├── components/             # Reusable Vue components (e.g., AppHeader)
-├── pages/                  # Application pages and routes
-│   ├── index.vue           # Main page (Game List)
-│   └── register/           # Game registration routes
-│       └── new.vue         # Form to create a new game
-├── server/                 # Server-side logic (Nitro)
-│   ├── api/                # API endpoints for CRUD operations
-│   └── data/               # Contains the games.json database file
-├── plugins/                # Nuxt plugins (e.g., PrimeVue setup)
-├── uno.config.ts           # UnoCSS configuration file
-├── nuxt.config.ts          # Nuxt 3 configuration file
-├── tsconfig.json           # TypeScript configuration
-└── .eslintrc.cjs           # ESLint configuration
-```
-
-## 📄 License
-
-This project was created for the Smilegate Vietnam Frontend Engineer Intern Entry Test.
+Dự án này cũng đã được build và deploy lên một nền tảng hosting. Bạn có thể truy cập và trải nghiệm phiên bản live của ứng dụng trực tiếp qua trình duyệt web.
